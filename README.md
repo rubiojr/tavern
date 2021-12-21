@@ -58,9 +58,9 @@ Or using docker:
 
 ```
 docker run ghcr.io/rubiojr/tavern:latest
+```
 
 You'll need to export `TAVERN_SERVER_URL` environment variable or use the tavern client with `--server-url`:
-```
 
 ```
 tavern publish --server-url https://my-tavern-server.com /site
