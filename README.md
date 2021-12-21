@@ -22,7 +22,7 @@ The Tavern client uses CharmFS to download the files to publish and the Tavern s
 
 Tavern is **highly experimental**, using it with charm accounts where you have valuable data or publishing to a public Tavern server is highly discouraged.
 
-When the tavern client publishes files (see [Publishing(#publishing)), it:
+When the tavern client publishes files (see [Publishing](#publishing)), it:
 
 * Requests a JWT token from Charm (cloud or your own charm server)
 * Adds the following HTTP headers to the request that will be sent to the Tavern server:
