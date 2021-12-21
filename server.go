@@ -41,6 +41,11 @@ func (s *Server) upload(c *gin.Context) {
 	req.Header.Add("Authorization", c.Request.Header.Get("Authorization"))
 	httpc := &http.Client{}
 	resp, err := httpc.Do(req)
+	if resp.StatusCode != 200 {
+		c.String(http.StatusForbidden, "communication with %s failed: %s", s.config.charmURL, resp.Status)
+		return
+	}
+
 	if err != nil {
 		c.String(http.StatusInternalServerError, "communication with %s failed: %s", s.config.charmURL, err)
 		return
