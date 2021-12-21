@@ -1,4 +1,4 @@
-FROM scratch
+FROM alpine:3
 COPY tavern /usr/local/bin/tavern
 
 WORKDIR /data

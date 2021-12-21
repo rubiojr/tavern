@@ -29,9 +29,11 @@ type Server struct {
 func (s *Server) upload(c *gin.Context) {
 	log.Printf("Upload request received, uploading to %s", s.config.UploadsPath)
 	charmID := c.Request.Header.Get("CharmId")
+
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/v1/id/%s", s.config.charmURL, charmID), nil)
 	if err != nil {
-		c.String(http.StatusInternalServerError, "communication with Charm failed")
+		c.String(http.StatusInternalServerError, "unexpected error")
+		log.Printf("error creating request: %s", err)
 		return
 	}
 
@@ -39,7 +41,7 @@ func (s *Server) upload(c *gin.Context) {
 	httpc := &http.Client{}
 	resp, err := httpc.Do(req)
 	if err != nil {
-		c.String(http.StatusInternalServerError, "communication with Charm failed")
+		c.String(http.StatusInternalServerError, "communication with Charm failed: %s", err)
 		return
 	}
 

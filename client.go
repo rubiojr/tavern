@@ -85,7 +85,8 @@ func (c *Client) PublishWithRoot(root, path string) error {
 	}
 
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("Error publishing! server error: %s", resp.Status)
+		status, err := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("error publishing, server error: %s %s", err, status)
 	}
 
 	fmt.Println("Site published!")
