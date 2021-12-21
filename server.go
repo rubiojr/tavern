@@ -14,13 +14,12 @@ import (
 const ServerDefaultUploadsPath = "tavern_uploads"
 const ServerDefaultAddr = "0.0.0.0:8000"
 const ServerDefaultURL = "http://" + ServerDefaultAddr
-const charmServerHost = "cloud.charm.sh"
-const charmServerPort = "35354"
+const ServerDefaultCharmServerURL = "https://charm.cloud.sh:35354"
 
 type Config struct {
-	Addr        string
-	UploadsPath string
-	charmURL    string
+	Addr           string
+	UploadsPath    string
+	CharmServerURL string
 }
 
 type Server struct {
@@ -31,7 +30,7 @@ func (s *Server) upload(c *gin.Context) {
 	log.Printf("Upload request received, uploading to %s", s.config.UploadsPath)
 	charmID := c.Request.Header.Get("CharmId")
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/v1/id/%s", s.config.charmURL, charmID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/v1/id/%s", s.config.CharmServerURL, charmID), nil)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "unexpected error")
 		log.Printf("error creating request: %s", err)
@@ -41,13 +40,18 @@ func (s *Server) upload(c *gin.Context) {
 	req.Header.Add("Authorization", c.Request.Header.Get("Authorization"))
 	httpc := &http.Client{}
 	resp, err := httpc.Do(req)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "communication with %s failed: %s", s.config.CharmServerURL, err)
+		return
+	}
+
 	if resp.StatusCode != 200 {
-		c.String(http.StatusForbidden, "communication with %s failed: %s", s.config.charmURL, resp.Status)
+		c.String(http.StatusForbidden, "communication with %s failed: %s", s.config.CharmServerURL, resp.Status)
 		return
 	}
 
 	if err != nil {
-		c.String(http.StatusInternalServerError, "communication with %s failed: %s", s.config.charmURL, err)
+		c.String(http.StatusInternalServerError, "communication with %s failed: %s", s.config.CharmServerURL, err)
 		return
 	}
 
@@ -81,8 +85,9 @@ func (s *Server) upload(c *gin.Context) {
 
 func NewServer() *Server {
 	config := &Config{
-		Addr:        ServerDefaultAddr,
-		UploadsPath: ServerDefaultUploadsPath,
+		Addr:           ServerDefaultAddr,
+		UploadsPath:    ServerDefaultUploadsPath,
+		CharmServerURL: ServerDefaultCharmServerURL,
 	}
 
 	return NewServerWithConfig(config)
@@ -97,16 +102,9 @@ func NewServerWithConfig(config *Config) *Server {
 		config.Addr = ServerDefaultAddr
 	}
 
-	if config.charmURL == "" {
-		host := charmServerHost
-		port := charmServerPort
-		if os.Getenv("CHARM_HOST") != "" {
-			host = os.Getenv("CHARM_HOST")
-		}
-		if os.Getenv("CHARM_PORT") != "" {
-			port = os.Getenv("CHARM_PORT")
-		}
-		config.charmURL = fmt.Sprintf("https://%s:%s", host, port)
+	envCharmURL := os.Getenv("CHARM_SERVER_URL")
+	if config.CharmServerURL == ServerDefaultCharmServerURL && envCharmURL != "" {
+		config.CharmServerURL = envCharmURL
 	}
 
 	return &Server{config: config}
@@ -124,7 +122,7 @@ func (s *Server) Serve() error {
 	router.StaticFS("/", http.Dir(s.config.UploadsPath))
 	log.Printf("serving on: %s", s.config.Addr)
 	log.Printf("uploads directory: %s", s.config.UploadsPath)
-	log.Printf("charm server: %s", s.config.charmURL)
+	log.Printf("charm server: %s", s.config.CharmServerURL)
 
 	return http.ListenAndServe(s.config.Addr, router)
 }

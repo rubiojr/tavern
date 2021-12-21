@@ -107,3 +107,9 @@ You'll need to export `TAVERN_SERVER_URL` environment variable or use the tavern
 ```
 tavern publish --server-url https://my-tavern-server.com /site
 ```
+
+If you want Tavern's server to auth against your own charm server, running locally:
+
+```
+tavern serve --charm-server-url http http://localhost:35354
+```
