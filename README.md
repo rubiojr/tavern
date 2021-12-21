@@ -2,16 +2,45 @@
 
 A few serve, the rest enjoy the free drinks.
 
-**⚠️ Work in progress, experimental**
+## ⚠️ Work in progress, experimental
+
+As the Tavern client downloads/decrypts and publishes to the world files available in CharmFS, it's highly recommended you setup your own Charm server locally to test Tavern, or use it with a Charm test account where you don't have sensible files that can't be published, until the first release is published.
+
+## Overview
 
 Tavern is a command line tool to publish static files available in the [Charm cloud][https://charm.sh) to a Tavern server where the files will be publicly available.
 
 Documents, images, [static websites](https://gohugo.io) or any other file you have in CharmFS will be downloaded, decrypted and published to a Tavern server.
 
-
 ## Usage
 
+To use Tavern (both client and server), you'll need a [Charm Cloud](https://charm.sh/cloud) account already setup.
+
+The Tavern client uses CharmFS to download the files to publish and the Tavern server uses Charm accounts to allow you to publish files. Each Tavern user gets a directory in a Tavern server, and that directory is named after your Charm ID.
+
+## Security
+
+Tavern is **highly experimental**, using it with charm accounts where you have valuable data or publishing to a public Tavern server is highly discouraged.
+
+When the tavern client publishes files (see [Publishing(#publishing)), it:
+
+* Requests a JWT token from Charm (cloud or your own charm server)
+* Adds the following HTTP headers to the request that will be sent to the Tavern server:
+  * The JWT token received from Charm as the `Authorization` header
+  * Your Charm ID received from Charm as the CharmID header
+* Sends a POST to the Tavern server with the headers and a multipart form with the files downloaded from CharmFS
+
+The tavern server will:
+
+* Use the same JWT header to check if you have an account in the configured Charm server (cloud.charm.sh by default), sending an HTTP request to the Charm HTTP server.
+* If the request returns a 200, will allow you to upload the files
+* Write the files to its local files system, under `tavern_uploads/<your-Charm-ID>`.
+
 ### Publishing
+
+The Tavern client will publish to https://pub.rbel.co by default, where I host a testing Tavern server. To use your own Tavern server, use `--server-url` with `publish` or export `TAVERN_SERVER_URL`.
+
+_Note: Please use the public test server for testing only, it'll go down several times during the day while I improve Tavern, and content can be removed regularly._
 
 To publish a directory available in Charm:
 
@@ -34,7 +63,7 @@ Site published!
 Visit https://pub.rbel.co/216c5634-9d63-48de-9106-bfd04483aa00
 ```
 
-This will publish everything under `charm:/site/public` to https://pub.rbel.co/<your-charm-id>`.
+This will publish everything under `charm:/site/public` to https://pub.rbel.co/<your-charm-id>`. **Note this makes private CharmFS files available to the rest of the Internet population, make sure you only.
 
 A sample script I use to publish [my website](https://hello.rbel.co), that I have hosted in my own charm server:
 
