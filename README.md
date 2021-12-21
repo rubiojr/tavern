@@ -75,7 +75,7 @@ set -e
 echo "Building the site..."
 cd ~/Documents/site && hugo
 echo "Updating CharmFS site..."
-charm fs cp -r public charm:site/public
+charm fs cp -r public charm:site
 echo "Publishing to Tavern..."
 tavern publish site/public
 ```
