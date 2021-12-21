@@ -14,7 +14,7 @@ import (
 const ServerDefaultUploadsPath = "tavern_uploads"
 const ServerDefaultAddr = "0.0.0.0:8000"
 const ServerDefaultURL = "http://" + ServerDefaultAddr
-const ServerDefaultCharmServerURL = "https://charm.cloud.sh:35354"
+const ServerDefaultCharmServerURL = "https://cloud.charm.sh:35354"
 
 type Config struct {
 	Addr           string
