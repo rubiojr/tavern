@@ -47,6 +47,7 @@ func (c *Client) PublishWithRoot(root, path string) error {
 	var body *bytes.Buffer
 	var writer *multipart.Writer
 
+	fmt.Printf("Retrieving files from %s...\n", c.charmClient.Config.Host)
 	f, err := c.remoteFS.Open(path)
 	if err != nil {
 		return err
