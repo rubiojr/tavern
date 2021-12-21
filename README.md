@@ -64,7 +64,7 @@ Site published!
 Visit https://pub.rbel.co/216c5634-9d63-48de-9106-bfd04483aa00
 ```
 
-This will publish everything under `charm:/site/public` to https://pub.rbel.co/`<your-charm-id>`. **Note:** this makes private CharmFS files available to the rest of the Internet population, make sure you only publish files that can be public!.
+This will publish everything under `charm:/site/public` to `https://pub.rbel.co/<your-charm-id>`. **Note:** this makes private CharmFS files available to the rest of the Internet population, make sure you only publish files that can be public!.
 
 A sample script I use to publish [my website](https://me.rbel.co), that I have hosted in my own charm server:
 
