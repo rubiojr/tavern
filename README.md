@@ -4,13 +4,13 @@ A few serve, the rest enjoy the free drinks.
 
 ## ⚠️ Work in progress, experimental
 
-As the Tavern client downloads/decrypts and publishes to the world files available in CharmFS, it's highly recommended you setup your own Charm server locally to test Tavern, or use it with a Charm test account where you don't have sensible files that can't be published, until the first release is published.
+As the Tavern client downloads, decrypts and publishes to the world files available in CharmFS, it's highly recommended you setup your own Charm server locally to test Tavern, or use it with a Charm test account where you don't have sensible files that can't be published, until the first release is published. You [can also setup your own Tavern server](#hosting-your-own-tavern-server) so instead of using https://pub.rbel.co.
 
 ## Overview
 
-Tavern is a command line tool to publish static files available in the [Charm cloud][https://charm.sh) to a Tavern server where the files will be publicly available.
+Tavern is a command line tool to publish static files available in the [Charm cloud](https://charm.sh) to a Tavern server where the files will be publicly available.
 
-Documents, images, [static websites](https://gohugo.io) or any other file you have in CharmFS will be downloaded, decrypted and published to a Tavern server.
+When publishing, documents, images, [static websites](https://gohugo.io) or any other file you have in CharmFS under the directory specified as a `tavern publish` argument (works with individual files also), will be downloaded, decrypted and published to a Tavern server (defaults to https://pub.rbel.co).
 
 ## Usage
 
@@ -46,6 +46,7 @@ To publish a directory available in Charm:
 
 ```
 tavern publish /site/public
+
 Publishing to /
 Adding  /404.html
 Adding  /index.html
@@ -63,14 +64,18 @@ Site published!
 Visit https://pub.rbel.co/216c5634-9d63-48de-9106-bfd04483aa00
 ```
 
-This will publish everything under `charm:/site/public` to https://pub.rbel.co/<your-charm-id>`. **Note this makes private CharmFS files available to the rest of the Internet population, make sure you only.
+This will publish everything under `charm:/site/public` to https://pub.rbel.co/<your-charm-id>`. **Note this makes private CharmFS files available to the rest of the Internet population, make sure you only publish files that can be public!.
 
-A sample script I use to publish [my website](https://hello.rbel.co), that I have hosted in my own charm server:
+A sample script I use to publish [my website](https://me.rbel.co), that I have hosted in my own charm server:
 
-```
+```sh
 #!/bin/sh
+set -e
+
+echo "Building the site..."
+cd ~/Documents/site && hugo
 echo "Updating CharmFS site..."
-charm fs cp -r ~/Documents/site charm:
+charm fs cp -r public charm:site/public
 echo "Publishing to Tavern..."
 tavern publish site/public
 ```
