@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "Updating CharmFS site..."
+charm fs cp -r ~/Documents/site charm:
+echo "Publishing to Tavern..."
+tavern publish site/public

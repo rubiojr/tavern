@@ -1,0 +1,10 @@
+version: "3"
+services:
+	tavern:
+    image: ghcr.io/rubiojr/tavern:latest
+    container_name: tavern 
+    volumes:
+      - /data/docker/tavern/data:/data
+    restart: unless-stopped
+    ports:
+      - 8000:8000

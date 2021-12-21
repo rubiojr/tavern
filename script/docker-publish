@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+./script/docker-build
+docker push ghcr.io/rubiojr/tavern
