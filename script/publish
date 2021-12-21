@@ -1,4 +1,6 @@
 #!/bin/sh
+export CHARM_HOST=cloud.charm.sh
+export CHARM_HTTP_PORT=35354
 echo "Updating CharmFS site..."
 charm fs cp -r ~/Documents/site charm:
 echo "Publishing to Tavern..."
