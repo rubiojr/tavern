@@ -42,7 +42,7 @@ func (s *Server) upload(c *gin.Context) {
 	httpc := &http.Client{}
 	resp, err := httpc.Do(req)
 	if err != nil {
-		c.String(http.StatusInternalServerError, "communication with Charm failed: %s", err)
+		c.String(http.StatusInternalServerError, "communication with %s failed: %s", s.config.charmURL, err)
 		return
 	}
 
