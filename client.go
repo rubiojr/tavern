@@ -3,12 +3,10 @@ package tavern
 import (
 	"bytes"
 	"fmt"
-	"io"
 	"io/fs"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"path/filepath"
 	"strings"
 
 	"github.com/charmbracelet/charm/client"
@@ -49,7 +47,7 @@ func (c *Client) PublishWithRoot(root, path string) error {
 	var body *bytes.Buffer
 	var writer *multipart.Writer
 
-	f, err := c.remoteFS.Open("/test")
+	f, err := c.remoteFS.Open(path)
 	if err != nil {
 		return err
 	}
@@ -161,20 +159,27 @@ func uploadFile(remotefs fs.FS, path string) (*bytes.Buffer, *multipart.Writer) 
 	writer := multipart.NewWriter(body)
 	defer writer.Close()
 
-	publishedPath := filepath.Base(path)
-	fmt.Println("adding ", publishedPath)
-	part, _ := writer.CreateFormFile("upload[]", publishedPath)
+	fmt.Println("Adding ", path)
+	part, err := writer.CreateFormFile("upload[]", path)
+	if err != nil {
+		panic(err)
+	}
+
 	f, err := remotefs.Open(path)
 	if err != nil {
 		panic(err)
 	}
+	defer f.Close()
 
-	_, err = io.Copy(part, f)
+	out, err := ioutil.ReadAll(f)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(body.String())
+	_, err = part.Write(out)
+	if err != nil {
+		panic(err)
+	}
 
 	return body, writer
 }

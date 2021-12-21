@@ -15,6 +15,7 @@ const ServerDefaultUploadsPath = "tavern_uploads"
 const ServerDefaultAddr = "0.0.0.0:8000"
 const ServerDefaultURL = "http://" + ServerDefaultAddr
 const charmServerHost = "cloud.charm.sh"
+const charmServerPort = "35354"
 
 type Config struct {
 	Addr        string
@@ -77,7 +78,6 @@ func NewServer() *Server {
 	config := &Config{
 		Addr:        ServerDefaultAddr,
 		UploadsPath: ServerDefaultUploadsPath,
-		charmURL:    charmServerHost,
 	}
 
 	return NewServerWithConfig(config)
@@ -93,11 +93,15 @@ func NewServerWithConfig(config *Config) *Server {
 	}
 
 	if config.charmURL == "" {
+		host := charmServerHost
+		port := charmServerPort
 		if os.Getenv("CHARM_HOST") != "" {
-			config.charmURL = fmt.Sprintf("https://%s", os.Getenv("CHARM_HOST"))
-		} else {
-			config.charmURL = charmServerHost
+			host = os.Getenv("CHARM_HOST")
 		}
+		if os.Getenv("CHARM_PORT") != "" {
+			port = os.Getenv("CHARM_PORT")
+		}
+		config.charmURL = fmt.Sprintf("https://%s:%s", host, port)
 	}
 
 	return &Server{config: config}
