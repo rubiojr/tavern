@@ -85,9 +85,12 @@ func (c *Client) PublishWithRoot(root, path string) error {
 
 	fmt.Printf("Publishing to %s\n", c.config.ServerURL)
 	if info.IsDir() {
-		body, writer = uploadDir(c.remoteFS, path)
+		body, writer, err = uploadDir(c.remoteFS, path)
 	} else {
-		body, writer = uploadFile(c.remoteFS, path)
+		body, writer, err = uploadFile(c.remoteFS, path)
+	}
+	if err != nil {
+		return err
 	}
 
 	id, err := c.charmClient.ID()
@@ -97,7 +100,7 @@ func (c *Client) PublishWithRoot(root, path string) error {
 
 	req, err := c.authedRequest("/_tavern/upload", id, body)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	req.Header.Add("Content-Type", writer.FormDataContentType())
 
@@ -136,7 +139,7 @@ func (c *Client) authedRequest(path, id string, body *bytes.Buffer) (*http.Reque
 	return req, nil
 }
 
-func uploadDir(cfs fs.FS, root string) (*bytes.Buffer, *multipart.Writer) {
+func uploadDir(cfs fs.FS, root string) (*bytes.Buffer, *multipart.Writer, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 	defer writer.Close()
@@ -175,14 +178,10 @@ func uploadDir(cfs fs.FS, root string) (*bytes.Buffer, *multipart.Writer) {
 		return nil
 	})
 
-	if err != nil {
-		panic(err)
-	}
-
-	return body, writer
+	return body, writer, err
 }
 
-func uploadFile(remotefs fs.FS, path string) (*bytes.Buffer, *multipart.Writer) {
+func uploadFile(remotefs fs.FS, path string) (*bytes.Buffer, *multipart.Writer, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 	defer writer.Close()
@@ -190,24 +189,21 @@ func uploadFile(remotefs fs.FS, path string) (*bytes.Buffer, *multipart.Writer) 
 	fmt.Println("Adding ", path)
 	part, err := writer.CreateFormFile("upload[]", path)
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 
 	f, err := remotefs.Open(path)
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 	defer f.Close()
 
 	out, err := ioutil.ReadAll(f)
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 
 	_, err = part.Write(out)
-	if err != nil {
-		panic(err)
-	}
 
-	return body, writer
+	return body, writer, err
 }
