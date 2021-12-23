@@ -7,11 +7,15 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/charmbracelet/charm/client"
 	cfs "github.com/charmbracelet/charm/fs"
 )
+
+const ClientDefaultCharmServerURL = "https://cloud.charm.sh"
+const ClientDefaultServerURL = "http://localhost:8000"
 
 type Client struct {
 	remoteFS    *cfs.FS
@@ -20,11 +24,33 @@ type Client struct {
 }
 
 type ClientConfig struct {
-	serverURL string
+	ServerURL      string
+	CharmServerURL string
 }
 
-func NewClient(serverURL string) (*Client, error) {
-	c, err := client.NewClientWithDefaults()
+func NewClient() (*Client, error) {
+	return NewClientWithConfig(DefaultConfig())
+}
+
+func DefaultConfig() *ClientConfig {
+	return &ClientConfig{ServerURL: ClientDefaultServerURL, CharmServerURL: ClientDefaultCharmServerURL}
+}
+
+func NewClientWithConfig(cfg *ClientConfig) (*Client, error) {
+	ccfg, err := client.ConfigFromEnv()
+	if err != nil {
+		return nil, err
+	}
+
+	csurl, err := url.Parse(cfg.CharmServerURL)
+	if err != nil {
+		return nil, err
+	}
+	ccfg.Host = csurl.Host
+	ccfg.HTTPPort = 35354
+	ccfg.SSHPort = 35353
+
+	c, err := client.NewClient(ccfg)
 	if err != nil {
 		return nil, err
 	}
@@ -34,9 +60,7 @@ func NewClient(serverURL string) (*Client, error) {
 		return nil, err
 	}
 
-	config := &ClientConfig{serverURL: serverURL}
-
-	return &Client{config: config, remoteFS: remote, charmClient: c}, nil
+	return &Client{config: cfg, remoteFS: remote, charmClient: c}, nil
 }
 
 func (c *Client) Publish(path string) error {
@@ -59,7 +83,7 @@ func (c *Client) PublishWithRoot(root, path string) error {
 		return err
 	}
 
-	fmt.Printf("Publishing to %s\n", c.config.serverURL)
+	fmt.Printf("Publishing to %s\n", c.config.ServerURL)
 	if info.IsDir() {
 		body, writer = uploadDir(c.remoteFS, path)
 	} else {
@@ -92,12 +116,12 @@ func (c *Client) PublishWithRoot(root, path string) error {
 	}
 
 	fmt.Println("Site published!")
-	fmt.Printf("Visit %s/%s\n", c.config.serverURL, id)
+	fmt.Printf("Visit %s/%s\n", c.config.ServerURL, id)
 	return nil
 }
 
 func (c *Client) authedRequest(path, id string, body *bytes.Buffer) (*http.Request, error) {
-	req, err := http.NewRequest("POST", fmt.Sprintf(c.config.serverURL+"/_tavern/upload"), body)
+	req, err := http.NewRequest("POST", fmt.Sprintf(c.config.ServerURL+"/_tavern/upload"), body)
 	if err != nil {
 		return nil, err
 	}

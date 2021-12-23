@@ -1,6 +1,7 @@
 package tavern
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"mime"
@@ -110,7 +111,7 @@ func NewServerWithConfig(config *Config) *Server {
 	return &Server{config: config}
 }
 
-func (s *Server) Serve() error {
+func (s *Server) Serve(ctx context.Context) error {
 	err := os.MkdirAll(s.config.UploadsPath, 0755)
 	if err != nil {
 		return err
@@ -124,5 +125,16 @@ func (s *Server) Serve() error {
 	log.Printf("uploads directory: %s", s.config.UploadsPath)
 	log.Printf("charm server: %s", s.config.CharmServerURL)
 
-	return http.ListenAndServe(s.config.Addr, router)
+	srv := &http.Server{
+		Addr:    s.config.Addr,
+		Handler: router,
+	}
+
+	go func() {
+		srv.ListenAndServe()
+	}()
+
+	<-ctx.Done()
+
+	return srv.Shutdown(ctx)
 }

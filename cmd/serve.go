@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/rubiojr/tavern"
 	"github.com/spf13/cobra"
 )
@@ -11,7 +13,7 @@ var serveCmd = &cobra.Command{
 	Short: "Run the Tavern server",
 	Run: func(cmd *cobra.Command, args []string) {
 		s := tavern.NewServerWithConfig(&tavern.Config{UploadsPath: *path, Addr: *addr, CharmServerURL: *charmServerURL})
-		s.Serve()
+		s.Serve(context.Background())
 	},
 }
 

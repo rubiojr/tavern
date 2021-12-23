@@ -21,7 +21,8 @@ var publishCmd = &cobra.Command{
 			*url = os.Getenv("TAVERN_SERVER_URL")
 		}
 
-		pc, err := tavern.NewClient(*url)
+		cfg := tavern.DefaultConfig()
+		pc, err := tavern.NewClientWithConfig(cfg)
 		if err != nil {
 			panic(err)
 		}
