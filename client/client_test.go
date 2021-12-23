@@ -17,6 +17,14 @@ func TestPublish(t *testing.T) {
 	defer cancel()
 
 	err := testutil.StartCharmServer(ctx, tdir)
+	if err != nil {
+		assert.FailNow(t, "error starting charm server")
+	}
+
+	cc, err := testutil.CharmClient()
+	if err != nil {
+		assert.FailNow(t, "error starting charm client")
+	}
 
 	tav := ts.NewServerWithConfig(&ts.Config{
 		Addr:           "127.0.0.2:8000",
@@ -32,11 +40,6 @@ func TestPublish(t *testing.T) {
 	c, err := NewClientWithConfig(tcc)
 	if err != nil {
 		assert.FailNow(t, "error creating tavern client", err)
-	}
-
-	cc, err := testutil.CharmClient()
-	if err != nil {
-		assert.FailNow(t, "error starting charm client")
 	}
 
 	charmfs, err := cfs.NewFSWithClient(cc)
