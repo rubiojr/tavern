@@ -31,7 +31,7 @@ func TestPublish(t *testing.T) {
 	tcc.ServerURL = testutil.ServerURL
 	c, err := NewClientWithConfig(tcc)
 	if err != nil {
-		assert.FailNow(t, "error creating tavern client")
+		assert.FailNow(t, "error creating tavern client", err)
 	}
 
 	cc, err := testutil.CharmClient()
