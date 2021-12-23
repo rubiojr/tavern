@@ -7,7 +7,6 @@ import (
 
 	cfs "github.com/charmbracelet/charm/fs"
 	"github.com/rubiojr/tavern/internal/testutil"
-	ts "github.com/rubiojr/tavern/server"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,13 +16,16 @@ func TestPublish(t *testing.T) {
 	defer cancel()
 
 	err := testutil.StartCharmServer(ctx, tdir)
+	if err != nil {
+		assert.FailNow(t, "error starting charm server")
+	}
 
-	tav := ts.NewServerWithConfig(&ts.Config{
-		Addr:           "127.0.0.2:8000",
-		UploadsPath:    tdir + "/uploads",
-		CharmServerURL: "http://127.0.0.2:35354",
-	})
-	go tav.Serve(ctx)
+	cc, err := testutil.CharmClient()
+	if err != nil {
+		assert.FailNow(t, "error starting charm client")
+	}
+
+	testutil.TavernServer(ctx, tdir)
 
 	// Create a new client.
 	tcc := DefaultConfig()
@@ -31,12 +33,7 @@ func TestPublish(t *testing.T) {
 	tcc.ServerURL = testutil.ServerURL
 	c, err := NewClientWithConfig(tcc)
 	if err != nil {
-		assert.FailNow(t, "error creating tavern client")
-	}
-
-	cc, err := testutil.CharmClient()
-	if err != nil {
-		assert.FailNow(t, "error starting charm client")
+		assert.FailNow(t, "error creating tavern client", err)
 	}
 
 	charmfs, err := cfs.NewFSWithClient(cc)

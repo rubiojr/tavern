@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"path/filepath"
 	"time"
 
 	"github.com/charmbracelet/charm/client"
 	"github.com/charmbracelet/charm/server"
 	"github.com/charmbracelet/keygen"
+	ts "github.com/rubiojr/tavern/server"
 )
 
 const TestHost = "127.0.0.2"
@@ -28,7 +30,7 @@ func StartCharmServer(ctx context.Context, dataDir string) error {
 
 	charm, err := server.NewServer(cfg)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	go charm.Start(ctx)
 
@@ -60,6 +62,21 @@ func CharmClient() (*client.Client, error) {
 	cc.Config.HTTPPort = 35354
 
 	return cc, nil
+}
+
+func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
+	tav := ts.NewServerWithConfig(&ts.Config{
+		Addr:           "127.0.0.2:8000",
+		UploadsPath:    filepath.Join(dataDir, "/uploads"),
+		CharmServerURL: "http://127.0.0.2:35354",
+	})
+	go tav.Serve(ctx)
+
+	if !waitForServer("127.0.0.2:8000") {
+		return nil, fmt.Errorf("tavern server did not start")
+	}
+
+	return tav, nil
 }
 
 func waitForServer(addr string) bool {

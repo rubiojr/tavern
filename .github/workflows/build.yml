@@ -4,7 +4,7 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [~1.17, ^1]
+        go-version: [~1.17]
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     env:
@@ -23,6 +23,10 @@ jobs:
 
       - name: Build
         run: go build -v ./...
+
+      - name: setup loopback macos
+        run: sudo ifconfig lo0 alias 127.0.0.2 up
+        if: contains(matrix.os, 'macos')
 
       - name: Test
         run: go test ./...
