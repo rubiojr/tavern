@@ -477,8 +477,8 @@ github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJ
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
-github.com/rubiojr/charm v0.9.2-0.20211221212840-155b3211bd4c h1:+QuQVbIlEwULnXD2y25RwjJUa2+mFABspuxsaYPvlpQ=
-github.com/rubiojr/charm v0.9.2-0.20211221212840-155b3211bd4c/go.mod h1:YQ+InduFGrJhNcFEuRcfEfmFfAWmrhPZB9f4xe043w8=
+github.com/rubiojr/charm v0.9.2-0.20211223100512-c561032f2167 h1:zkNWhfGKiReBY+l04ckHh0IZBnkUqf1832Q8416NCik=
+github.com/rubiojr/charm v0.9.2-0.20211223100512-c561032f2167/go.mod h1:YQ+InduFGrJhNcFEuRcfEfmFfAWmrhPZB9f4xe043w8=
 github.com/russross/blackfriday v1.5.2/go.mod h1:JO/DiYxRf+HjHt06OyowR9PTA263kcR/rfWxYHBV53g=
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
