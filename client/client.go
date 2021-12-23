@@ -1,4 +1,4 @@
-package tavern
+package client
 
 import (
 	"bytes"
@@ -15,15 +15,15 @@ import (
 )
 
 const ClientDefaultCharmServerURL = "https://cloud.charm.sh"
-const ClientDefaultServerURL = "http://localhost:8000"
+const DefaultServerURL = "http://localhost:8000"
 
 type Client struct {
 	remoteFS    *cfs.FS
 	charmClient *client.Client
-	config      *ClientConfig
+	config      *Config
 }
 
-type ClientConfig struct {
+type Config struct {
 	ServerURL      string
 	CharmServerURL string
 }
@@ -32,11 +32,11 @@ func NewClient() (*Client, error) {
 	return NewClientWithConfig(DefaultConfig())
 }
 
-func DefaultConfig() *ClientConfig {
-	return &ClientConfig{ServerURL: ClientDefaultServerURL, CharmServerURL: ClientDefaultCharmServerURL}
+func DefaultConfig() *Config {
+	return &Config{ServerURL: DefaultServerURL, CharmServerURL: ClientDefaultCharmServerURL}
 }
 
-func NewClientWithConfig(cfg *ClientConfig) (*Client, error) {
+func NewClientWithConfig(cfg *Config) (*Client, error) {
 	ccfg, err := client.ConfigFromEnv()
 	if err != nil {
 		return nil, err

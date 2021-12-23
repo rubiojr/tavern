@@ -1,4 +1,4 @@
-package tavern
+package server
 
 import (
 	"context"

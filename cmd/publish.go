@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/rubiojr/tavern"
+	"github.com/rubiojr/tavern/client"
 	"github.com/spf13/cobra"
 )
 
@@ -21,8 +21,8 @@ var publishCmd = &cobra.Command{
 			*url = os.Getenv("TAVERN_SERVER_URL")
 		}
 
-		cfg := tavern.DefaultConfig()
-		pc, err := tavern.NewClientWithConfig(cfg)
+		cfg := client.DefaultConfig()
+		pc, err := client.NewClientWithConfig(cfg)
 		if err != nil {
 			panic(err)
 		}

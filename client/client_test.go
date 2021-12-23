@@ -1,4 +1,4 @@
-package tavern
+package client
 
 import (
 	"context"
@@ -12,11 +12,12 @@ import (
 	cfs "github.com/charmbracelet/charm/fs"
 	"github.com/charmbracelet/charm/server"
 	"github.com/charmbracelet/keygen"
+	ts "github.com/rubiojr/tavern/server"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPublish(t *testing.T) {
-	tdir := "testout"
+	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -40,7 +41,7 @@ func TestPublish(t *testing.T) {
 		t.Fatal("charm server did not start")
 	}
 
-	tav := NewServerWithConfig(&Config{
+	tav := ts.NewServerWithConfig(&ts.Config{
 		Addr:           "127.0.0.2:8000",
 		UploadsPath:    tdir + "/uploads",
 		CharmServerURL: "http://127.0.0.2:35354",
