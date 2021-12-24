@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -61,5 +62,10 @@ func TestPublish(t *testing.T) {
 	rootCmd.ExecuteC()
 	assert.NoError(t, err)
 
-	assert.FileExists(t, filepath.Join(tdir, testutil.UploadsPath, cid, "testdata/test.txt"))
+	dfile := filepath.Join(tdir, testutil.UploadsPath, cid, "testdata/test.txt")
+	assert.FileExists(t, dfile)
+
+	out, err := ioutil.ReadFile(dfile)
+	assert.NoError(t, err)
+	assert.Equal(t, "foo\n", string(out))
 }
