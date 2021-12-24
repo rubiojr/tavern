@@ -17,7 +17,11 @@ func TestPublish(t *testing.T) {
 	log.SetOutput(buf)
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	defer func() {
+		cancel()
+		testutil.WaitForServerShutdown("127.0.0.2:35353")
+		testutil.WaitForServerShutdown("127.0.0.2:35354")
+	}()
 
 	err := testutil.StartCharmServer(ctx, tdir)
 	if err != nil {

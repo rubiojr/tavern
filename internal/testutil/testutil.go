@@ -108,6 +108,18 @@ func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
 	return tav, nil
 }
 
+func WaitForServerShutdown(addr string) bool {
+	for i := 0; i < 40; i++ {
+		_, err := net.Dial("tcp", addr)
+		if err != nil {
+			return true
+		}
+		time.Sleep(500 * time.Millisecond)
+	}
+
+	return false
+}
+
 func WaitForServer(addr string) bool {
 	for i := 0; i < 40; i++ {
 		conn, err := net.Dial("tcp", addr)
