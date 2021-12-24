@@ -7,7 +7,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var url *string
+var url, charmHost *string
+var charmHTTPPort, charmSSHPort *int
 
 const defaultURL = "https://pub.rbel.co"
 
@@ -22,9 +23,11 @@ var publishCmd = &cobra.Command{
 		}
 
 		cfg := client.DefaultConfig()
+		cfg.ServerURL = *url
+		cfg.CharmServerHost = *charmHost
 		pc, err := client.NewClientWithConfig(cfg)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		return pc.Publish(args[0])
@@ -34,4 +37,7 @@ var publishCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(publishCmd)
 	url = publishCmd.Flags().StringP("server-url", "s", defaultURL, "Tavern server URL")
+	charmHost = publishCmd.Flags().StringP("charm-server-host", "", "cloud.charm.sh", "Charm server URL")
+	charmHTTPPort = publishCmd.Flags().IntP("charm-server-http-port", "", 35354, "Charm server URL")
+	charmSSHPort = publishCmd.Flags().IntP("charm-server-ssh-port", "", 35353, "Charm server URL")
 }
