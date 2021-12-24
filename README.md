@@ -83,9 +83,8 @@ tavern publish site/public
 If you want to publish files in your own Charm server:
 
 ```
-export CHARM_HOST=charm-server-host-or-ip # defaults to cloud.charm.sh
-export CHARM_PORT=charm-server-http-port # defaults to 35354, using TLS
-tavern publish site/public
+# use --charm-server-http-port and --charm-server-ssh-port if you are using non-standard Charm ports
+tavern publish --charm-server-host your.charm.server site/public
 ```
 
 ### Hosting your own Tavern server
@@ -108,8 +107,17 @@ You'll need to export `TAVERN_SERVER_URL` environment variable or use the tavern
 tavern publish --server-url https://my-tavern-server.com /site
 ```
 
+#### Running Tavern against your own Charm server
+
 If you want Tavern's server to auth against your own charm server, running locally:
 
 ```
-tavern serve --charm-server-url http http://localhost:35354
+# 35354 is the default Charm server HTTP port
+tavern serve --charm-server-url http https://your.charm.server:35354
+```
+
+You'll also need to use `--charm-server-host` when publishing with Tavern client:
+
+```
+tavern publish --charm-server-host your.charm.server site/public
 ```
