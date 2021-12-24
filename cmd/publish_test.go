@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 
@@ -14,10 +13,6 @@ import (
 	"github.com/rubiojr/tavern/internal/testutil"
 	"github.com/stretchr/testify/assert"
 )
-
-func init() {
-	runtime.LockOSThread()
-}
 
 func TestPublish(t *testing.T) {
 	buf := &testutil.Buffer{}
