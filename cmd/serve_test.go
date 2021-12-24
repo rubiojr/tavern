@@ -5,11 +5,16 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"runtime"
 	"testing"
 
 	"github.com/rubiojr/tavern/internal/testutil"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	runtime.LockOSThread()
+}
 
 func TestServe(t *testing.T) {
 	buf := &testutil.Buffer{}

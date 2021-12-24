@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	cfs "github.com/charmbracelet/charm/fs"
@@ -12,16 +13,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func init() {
+	runtime.LockOSThread()
+}
+
 func TestPublish(t *testing.T) {
 	buf := &testutil.Buffer{}
 	log.SetOutput(buf)
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
-	defer func() {
-		cancel()
-		testutil.WaitForServerShutdown("127.0.0.2:35353")
-		testutil.WaitForServerShutdown("127.0.0.2:35354")
-	}()
+	defer cancel()
 
 	err := testutil.StartCharmServer(ctx, tdir)
 	if err != nil {
