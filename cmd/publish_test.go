@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 
 	cfs "github.com/charmbracelet/charm/fs"
@@ -67,5 +68,5 @@ func TestPublish(t *testing.T) {
 
 	out, err := ioutil.ReadFile(dfile)
 	assert.NoError(t, err)
-	assert.Equal(t, "foo\n", string(out))
+	assert.Equal(t, "foo", strings.TrimRight(string(out), "\r\n"))
 }
