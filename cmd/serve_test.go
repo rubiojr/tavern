@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/rubiojr/tavern/internal/testutil"
@@ -28,6 +29,6 @@ func TestServe(t *testing.T) {
 	testutil.WaitForServer("127.0.0.2:8000")
 
 	assert.Regexp(t, regexp.MustCompile(`charm server: http://127.0.0.2:35354`), buf.String())
-	assert.Regexp(t, regexp.MustCompile(fmt.Sprintf(`uploads directory: %s`, tdir)), buf.String())
+	assert.True(t, strings.Contains(buf.String(), fmt.Sprintf(`uploads directory: %s`, tdir)))
 	assert.Regexp(t, regexp.MustCompile(`serving on: 127.0.0.2:8000`), buf.String())
 }
