@@ -11,9 +11,10 @@ import (
 var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Run the Tavern server",
-	Run: func(cmd *cobra.Command, args []string) {
+	Args:  cobra.NoArgs,
+	RunE: func(cmd *cobra.Command, args []string) error {
 		s := server.NewServerWithConfig(&server.Config{UploadsPath: *path, Addr: *addr, CharmServerURL: *charmServerURL})
-		s.Serve(context.Background())
+		return s.Serve(context.Background())
 	},
 }
 

@@ -1,10 +1,12 @@
 package testutil
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"github.com/charmbracelet/charm/client"
@@ -14,8 +16,35 @@ import (
 )
 
 const TestHost = "127.0.0.2"
-const CharmServerURL = "http://" + TestHost
+const TestServerURL = TestHost + ":8000"
+const CharmServerHost = TestHost
 const ServerURL = "http://" + TestHost + ":8000"
+const UploadsPath = "/uploads"
+
+// Thread safe buffer to avoid data races when setting a custom writer
+// for the log
+type Buffer struct {
+	b bytes.Buffer
+	m sync.Mutex
+}
+
+func (b *Buffer) Read(p []byte) (n int, err error) {
+	b.m.Lock()
+	defer b.m.Unlock()
+	return b.b.Read(p)
+}
+
+func (b *Buffer) Write(p []byte) (n int, err error) {
+	b.m.Lock()
+	defer b.m.Unlock()
+	return b.b.Write(p)
+}
+
+func (b *Buffer) String() string {
+	b.m.Lock()
+	defer b.m.Unlock()
+	return b.b.String()
+}
 
 func StartCharmServer(ctx context.Context, dataDir string) error {
 	cfg := server.DefaultConfig()
@@ -34,7 +63,7 @@ func StartCharmServer(ctx context.Context, dataDir string) error {
 	}
 	go charm.Start(ctx)
 
-	if !waitForServer(":35354") {
+	if !WaitForServer(":35354") {
 		return fmt.Errorf("charm server did not start")
 	}
 
@@ -67,19 +96,31 @@ func CharmClient() (*client.Client, error) {
 func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
 	tav := ts.NewServerWithConfig(&ts.Config{
 		Addr:           "127.0.0.2:8000",
-		UploadsPath:    filepath.Join(dataDir, "/uploads"),
+		UploadsPath:    filepath.Join(dataDir, UploadsPath),
 		CharmServerURL: "http://127.0.0.2:35354",
 	})
 	go tav.Serve(ctx)
 
-	if !waitForServer("127.0.0.2:8000") {
+	if !WaitForServer("127.0.0.2:8000") {
 		return nil, fmt.Errorf("tavern server did not start")
 	}
 
 	return tav, nil
 }
 
-func waitForServer(addr string) bool {
+func WaitForServerShutdown(addr string) bool {
+	for i := 0; i < 40; i++ {
+		_, err := net.Dial("tcp", addr)
+		if err != nil {
+			return true
+		}
+		time.Sleep(500 * time.Millisecond)
+	}
+
+	return false
+}
+
+func WaitForServer(addr string) bool {
 	for i := 0; i < 40; i++ {
 		conn, err := net.Dial("tcp", addr)
 		if err == nil {

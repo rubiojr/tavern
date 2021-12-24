@@ -1,8 +1,12 @@
-package client
+package cmd
 
 import (
 	"context"
+	"io/ioutil"
+	"log"
 	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	cfs "github.com/charmbracelet/charm/fs"
@@ -11,6 +15,8 @@ import (
 )
 
 func TestPublish(t *testing.T) {
+	buf := &testutil.Buffer{}
+	log.SetOutput(buf)
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -25,16 +31,12 @@ func TestPublish(t *testing.T) {
 		assert.FailNow(t, "error starting charm client")
 	}
 
-	testutil.TavernServer(ctx, tdir)
-
-	// Create a new client.
-	tcc := DefaultConfig()
-	tcc.CharmServerURL = testutil.CharmServerURL
-	tcc.ServerURL = testutil.ServerURL
-	c, err := NewClientWithConfig(tcc)
+	cid, err := cc.ID()
 	if err != nil {
-		assert.FailNow(t, "error creating tavern client", err)
+		assert.FailNow(t, "error retrieving charm ID", err)
 	}
+
+	testutil.TavernServer(ctx, tdir)
 
 	charmfs, err := cfs.NewFSWithClient(cc)
 	if err != nil {
@@ -47,6 +49,19 @@ func TestPublish(t *testing.T) {
 	err = charmfs.WriteFile("testdata/test.txt", handle)
 	assert.NoError(t, err)
 
-	err = c.Publish("testdata/test.txt")
+	rootCmd.SetArgs([]string{
+		"publish",
+		"--charm-server-host", testutil.TestHost,
+		"--server-url", testutil.ServerURL,
+		"testdata/test.txt",
+	})
+	rootCmd.ExecuteC()
 	assert.NoError(t, err)
+
+	dfile := filepath.Join(tdir, testutil.UploadsPath, cid, "testdata/test.txt")
+	assert.FileExists(t, dfile)
+
+	out, err := ioutil.ReadFile(dfile)
+	assert.NoError(t, err)
+	assert.Equal(t, "foo", strings.TrimRight(string(out), "\r\n"))
 }
