@@ -13,7 +13,7 @@ import (
 )
 
 const ServerDefaultUploadsPath = "tavern_uploads"
-const ServerDefaultAddr = "0.0.0.0:8000"
+const ServerDefaultAddr = "127.0.0.1:8000"
 const ServerDefaultURL = "http://" + ServerDefaultAddr
 const ServerDefaultCharmServerURL = "https://cloud.charm.sh:35354"
 
@@ -42,22 +42,12 @@ func (s *Server) upload(c *gin.Context) {
 	httpc := &http.Client{}
 	resp, err := httpc.Do(req)
 	if err != nil {
-		c.String(http.StatusInternalServerError, "communication with %s failed: %s", s.config.CharmServerURL, err)
+		c.String(http.StatusInternalServerError, "communication %s failed: %s", s.config.CharmServerURL, err)
 		return
 	}
 
 	if resp.StatusCode != 200 {
-		c.String(http.StatusForbidden, "communication with %s failed: %s", s.config.CharmServerURL, resp.Status)
-		return
-	}
-
-	if err != nil {
-		c.String(http.StatusInternalServerError, "communication with %s failed: %s", s.config.CharmServerURL, err)
-		return
-	}
-
-	if resp.StatusCode != 200 {
-		c.String(http.StatusBadRequest, "bad request")
+		c.String(http.StatusForbidden, "invalid status code %s from server %s", resp.StatusCode, s.config.CharmServerURL)
 		return
 	}
 

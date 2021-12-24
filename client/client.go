@@ -7,15 +7,16 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"net/url"
 	"strings"
 
 	"github.com/charmbracelet/charm/client"
 	cfs "github.com/charmbracelet/charm/fs"
 )
 
-const ClientDefaultCharmServerURL = "https://cloud.charm.sh"
+const DefaultCharmServerHost = "https://cloud.charm.sh"
 const DefaultServerURL = "http://localhost:8000"
+const DefaultCharmServerHTTPort = 35354
+const DefaultCharmServerSSHPort = 35353
 
 type Client struct {
 	remoteFS    *cfs.FS
@@ -24,8 +25,10 @@ type Client struct {
 }
 
 type Config struct {
-	ServerURL      string
-	CharmServerURL string
+	ServerURL           string
+	CharmServerHost     string
+	CharmServerHTTPPort int
+	CharmServerSSHPort  int
 }
 
 func NewClient() (*Client, error) {
@@ -33,7 +36,7 @@ func NewClient() (*Client, error) {
 }
 
 func DefaultConfig() *Config {
-	return &Config{ServerURL: DefaultServerURL, CharmServerURL: ClientDefaultCharmServerURL}
+	return &Config{ServerURL: DefaultServerURL, CharmServerHost: DefaultCharmServerHost, CharmServerHTTPPort: DefaultCharmServerHTTPort, CharmServerSSHPort: DefaultCharmServerSSHPort}
 }
 
 func NewClientWithConfig(cfg *Config) (*Client, error) {
@@ -42,13 +45,9 @@ func NewClientWithConfig(cfg *Config) (*Client, error) {
 		return nil, err
 	}
 
-	csurl, err := url.Parse(cfg.CharmServerURL)
-	if err != nil {
-		return nil, err
-	}
-	ccfg.Host = csurl.Host
-	ccfg.HTTPPort = 35354
-	ccfg.SSHPort = 35353
+	ccfg.Host = cfg.CharmServerHost
+	ccfg.HTTPPort = cfg.CharmServerHTTPPort
+	ccfg.SSHPort = cfg.CharmServerSSHPort
 
 	c, err := client.NewClient(ccfg)
 	if err != nil {
@@ -71,10 +70,11 @@ func (c *Client) PublishWithRoot(root, path string) error {
 	var body *bytes.Buffer
 	var writer *multipart.Writer
 
+	fmt.Printf("Publishing %s\n", path)
 	fmt.Printf("Retrieving files from %s...\n", c.charmClient.Config.Host)
 	f, err := c.remoteFS.Open(path)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to open %s: %w", path, err)
 	}
 	defer f.Close()
 
