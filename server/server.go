@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const UploadRoute = "/v1/tavern/upload"
 const ServerDefaultUploadsPath = "tavern_uploads"
 const ServerDefaultAddr = "127.0.0.1:8000"
 const ServerDefaultURL = "http://" + ServerDefaultAddr
@@ -109,7 +110,7 @@ func (s *Server) Serve(ctx context.Context) error {
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	router.POST("/_tavern/upload", s.upload)
+	router.POST(UploadRoute, s.upload)
 	router.StaticFS("/", http.Dir(s.config.UploadsPath))
 	log.Printf("serving on: %s", s.config.Addr)
 	log.Printf("uploads directory: %s", s.config.UploadsPath)
