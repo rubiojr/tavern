@@ -11,6 +11,7 @@ import (
 
 	"github.com/charmbracelet/charm/client"
 	cfs "github.com/charmbracelet/charm/fs"
+	"github.com/rubiojr/tavern/server"
 )
 
 const DefaultCharmServerHost = "https://cloud.charm.sh"
@@ -98,7 +99,7 @@ func (c *Client) PublishWithRoot(root, path string) error {
 		return err
 	}
 
-	req, err := c.authedRequest("/_tavern/upload", id, body)
+	req, err := c.authedRequest(server.UploadRoute, id, body)
 	if err != nil {
 		return err
 	}
@@ -124,7 +125,7 @@ func (c *Client) PublishWithRoot(root, path string) error {
 }
 
 func (c *Client) authedRequest(path, id string, body *bytes.Buffer) (*http.Request, error) {
-	req, err := http.NewRequest("POST", fmt.Sprintf(c.config.ServerURL+"/_tavern/upload"), body)
+	req, err := http.NewRequest("POST", fmt.Sprintf(c.config.ServerURL+server.UploadRoute), body)
 	if err != nil {
 		return nil, err
 	}
