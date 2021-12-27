@@ -10,6 +10,7 @@ replace github.com/charmbracelet/charm v0.9.2 => github.com/rubiojr/charm v0.9.2
 require (
 	github.com/charmbracelet/keygen v0.1.2
 	github.com/gin-gonic/gin v1.7.7
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/spf13/cobra v1.3.0
 	github.com/stretchr/testify v1.7.0
 )
