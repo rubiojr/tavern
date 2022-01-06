@@ -130,7 +130,7 @@ func (c *Client) authedRequest(path, id string, body *bytes.Buffer) (*http.Reque
 		return nil, err
 	}
 
-	jwt, err := c.charmClient.JWT()
+	jwt, err := c.charmClient.JWT("tavern")
 	if err != nil {
 		return nil, err
 	}

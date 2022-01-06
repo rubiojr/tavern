@@ -20,6 +20,7 @@ type Config struct {
 	Addr           string
 	UploadsPath    string
 	CharmServerURL string
+	Whitelist      []string
 }
 
 type Server struct {
@@ -62,7 +63,11 @@ func (s *Server) Serve(ctx context.Context) error {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	uploads := router.Group(UploadRoute)
-	uploads.Use(middleware.CharmAuth(s.config.CharmServerURL))
+	whitelist := map[string]struct{}{}
+	for _, host := range s.config.Whitelist {
+		whitelist[host] = struct{}{}
+	}
+	uploads.Use(middleware.JWKS(whitelist))
 	uploads.POST("/", middleware.Uploads(s.config.UploadsPath, 32<<20))
 	router.StaticFS("/", http.Dir(s.config.UploadsPath))
 	log.Printf("serving on: %s", s.config.Addr)

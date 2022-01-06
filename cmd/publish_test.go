@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,8 +14,6 @@ import (
 )
 
 func TestPublish(t *testing.T) {
-	buf := &testutil.Buffer{}
-	log.SetOutput(buf)
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
