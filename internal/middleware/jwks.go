@@ -23,12 +23,14 @@ func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
 		if err != nil {
 			log.Printf("JWT parsing error: %s", err)
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
 		issuer, err := url.Parse(claims.Issuer)
 		if err != nil {
 			log.Printf("valid issuer not found: %s", err)
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
 		if claims.Subject == "" {
@@ -57,6 +59,7 @@ func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
 		if err != nil {
 			log.Printf("could not create validator: %s", err)
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
 		valid := false
