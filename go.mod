@@ -9,7 +9,7 @@ require github.com/charmbracelet/charm v0.9.2
 replace github.com/charmbracelet/charm v0.9.2 => github.com/rubiojr/charm v0.9.2-0.20220109131822-e8fac60b9609
 
 require (
-	github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1
+	github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1.0.20220114094443-f1c09c3cd875
 	github.com/charmbracelet/keygen v0.1.2
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-jwt/jwt/v4 v4.2.0
@@ -63,7 +63,7 @@ require (
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	github.com/xrash/smetrics v0.0.0-20200730060457-89a2a8a1fb0b // indirect
 	goji.io v2.0.2+incompatible // indirect
-	golang.org/x/crypto v0.0.0-20211209193657-4570a0811e8b // indirect
+	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce // indirect
 	golang.org/x/mod v0.5.0 // indirect
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
 	golang.org/x/term v0.0.0-20210422114643-f5beecf764ed // indirect

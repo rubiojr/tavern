@@ -48,11 +48,10 @@ func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
 			}
 		}
 
-		fmt.Println(issuer.String())
 		p := jwks.NewCachingProvider(issuer, 1*time.Hour)
 		jwtValidator, err := validator.New(
 			p.KeyFunc,
-			validator.RS512,
+			validator.EdDSA,
 			issuer.String(),
 			[]string{"tavern"},
 		)
@@ -70,6 +69,7 @@ func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
 		if valid {
 			c.Next()
 		} else {
+			log.Printf("JWT validation failed")
 			c.Abort()
 		}
 	}
