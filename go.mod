@@ -2,14 +2,13 @@ module github.com/rubiojr/tavern
 
 go 1.17
 
-require github.com/charmbracelet/charm v0.9.2
-
 // go list -m github.com/rubiojr/charm@main
 //replace github.com/charmbracelet/charm => /home/rubiojr/git/rubiojr/charm
-replace github.com/charmbracelet/charm v0.9.2 => github.com/rubiojr/charm v0.9.2-0.20220109131822-e8fac60b9609
+replace github.com/charmbracelet/charm v0.9.2 => github.com/rubiojr/charm v0.9.2-0.20220119153125-9416d0a1d197
 
 require (
 	github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1.0.20220114094443-f1c09c3cd875
+	github.com/charmbracelet/charm v0.9.2
 	github.com/charmbracelet/keygen v0.1.2
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-jwt/jwt/v4 v4.2.0

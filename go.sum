@@ -72,8 +72,6 @@ github.com/armon/go-radix v1.0.0/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgI
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
 github.com/atotto/clipboard v0.1.2/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
 github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta/go.mod h1:dWL9pw5FgrzT1Hhmt+D0W8XmDDulGHN3yMMQl1Oq4RM=
-github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1 h1:U9fzXrPf4kWIBKLOBMl+yLcNzBBFWVkPFzNZfM2c+sY=
-github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1/go.mod h1:L3DhK5k9VNNIh0GeyjGnkTiQJmvy61ydLO8f0o/InXI=
 github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1.0.20220114094443-f1c09c3cd875 h1:RK3kuPsAtGeH2d+lk/U1JrSS6vMeecA6tKBua9hm76c=
 github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1.0.20220114094443-f1c09c3cd875/go.mod h1:/y7nPmfWDnJhCbFq22haCAU7vufwsOUzTthLVleE6/8=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
@@ -471,8 +469,8 @@ github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJ
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
-github.com/rubiojr/charm v0.9.2-0.20220109131822-e8fac60b9609 h1:eqUynYNu1Iv4gz2vIEOUxZzt/DNw9cBFoog1eyBF+gg=
-github.com/rubiojr/charm v0.9.2-0.20220109131822-e8fac60b9609/go.mod h1:HxbI5BdN+uojw01GrHFlfl/xLrpoWQjH6vWnH8bHU7Y=
+github.com/rubiojr/charm v0.9.2-0.20220119153125-9416d0a1d197 h1:Bh8V7rJx1F7+W+8Q6loJ5cUXon1DrYATCIHiCX6MZiM=
+github.com/rubiojr/charm v0.9.2-0.20220119153125-9416d0a1d197/go.mod h1:HxbI5BdN+uojw01GrHFlfl/xLrpoWQjH6vWnH8bHU7Y=
 github.com/russross/blackfriday v1.5.2/go.mod h1:JO/DiYxRf+HjHt06OyowR9PTA263kcR/rfWxYHBV53g=
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
@@ -578,8 +576,6 @@ golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b/go.mod h1:T9bdIzuCu7OtxOm
 golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
 golang.org/x/crypto v0.0.0-20210817164053-32db794688a5/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
 golang.org/x/crypto v0.0.0-20211202192323-5770296d904e/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
-golang.org/x/crypto v0.0.0-20211209193657-4570a0811e8b h1:QAqMVf3pSa6eeTsuklijukjXBlj7Es2QQplab+/RbQ4=
-golang.org/x/crypto v0.0.0-20211209193657-4570a0811e8b/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce h1:Roh6XWxHFKrPgC/EQhVubSAGQ6Ozk6IdxHSzt1mR0EI=
 golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
