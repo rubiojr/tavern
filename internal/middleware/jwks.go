@@ -73,7 +73,12 @@ func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
 }
 
 func getClaims(auth string) (*jwt.RegisteredClaims, error) {
-	encodedToken := auth[len("Bearer "):]
+	tMinLen := len("Bearer ")
+	if len(auth) <= tMinLen {
+		return nil, fmt.Errorf("invalid header token")
+	}
+
+	encodedToken := auth[tMinLen:]
 	p := jwt.Parser{}
 	t, _, err := p.ParseUnverified(encodedToken, &jwt.RegisteredClaims{})
 	if err != nil {
