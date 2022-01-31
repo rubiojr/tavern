@@ -25,6 +25,7 @@ var publishCmd = &cobra.Command{
 		cfg := client.DefaultConfig()
 		cfg.ServerURL = *url
 		cfg.CharmServerHost = *charmHost
+		cfg.CharmServerHTTPPort = *charmHTTPPort
 		pc, err := client.NewClientWithConfig(cfg)
 		if err != nil {
 			return err
