@@ -28,7 +28,8 @@ func TestPublish(t *testing.T) {
 		assert.FailNow(t, "error retrieving charm ID", err)
 	}
 
-	testutil.TavernServer(ctx, tdir)
+	_, err = testutil.TavernServer(ctx, tdir)
+	assert.NoError(t, err)
 
 	charmfs, err := cfs.NewFSWithClient(cc)
 	if err != nil {
@@ -68,7 +69,8 @@ func TestAllowedCharmServers(t *testing.T) {
 		assert.FailNow(t, "error starting charm client")
 	}
 
-	testutil.TavernServerA(ctx, tdir, "foo.bar")
+	_, err = testutil.TavernServerA(ctx, tdir, "foo.bar")
+	assert.NoError(t, err)
 
 	charmfs, err := cfs.NewFSWithClient(cc)
 	if err != nil {
