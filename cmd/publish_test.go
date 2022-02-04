@@ -47,7 +47,7 @@ func TestPublish(t *testing.T) {
 		"--server-url", testutil.ServerURL,
 		"testdata/test.txt",
 	})
-	rootCmd.ExecuteC()
+	_, err = rootCmd.ExecuteC()
 	assert.NoError(t, err)
 
 	dfile := filepath.Join(tdir, testutil.UploadsPath, cid, "testdata/test.txt")

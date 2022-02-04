@@ -70,9 +70,8 @@ func CharmClient() (*client.Client, error) {
 
 func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
 	tav := ts.NewServerWithConfig(&ts.Config{
-		Addr:           "127.0.0.2:8000",
-		UploadsPath:    filepath.Join(dataDir, UploadsPath),
-		CharmServerURL: "http://127.0.0.2:35354",
+		Addr:        "127.0.0.2:8000",
+		UploadsPath: filepath.Join(dataDir, UploadsPath),
 	})
 	go tav.Serve(ctx)
 
@@ -88,7 +87,6 @@ func TavernServerA(ctx context.Context, dataDir string, allowList ...string) (*t
 	tav := ts.NewServerWithConfig(&ts.Config{
 		Addr:                "127.0.0.2:8000",
 		UploadsPath:         filepath.Join(dataDir, UploadsPath),
-		CharmServerURL:      "http://127.0.0.2:35354",
 		AllowedCharmServers: allowList,
 	})
 	go tav.Serve(ctx)

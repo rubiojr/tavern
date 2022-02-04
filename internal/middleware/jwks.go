@@ -17,7 +17,7 @@ import (
 // Accepts a list of Charm server hosts allowed for publishing in this
 // Tavern instance.
 // If the list is empty, any charm host is allowed.
-func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
+func JWKS(allowedServers map[string]struct{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		claims, err := getClaims(c.GetHeader("Authorization"))
 		if err != nil {
@@ -39,8 +39,8 @@ func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
 		}
 		c.Set("charm_id", claims.Subject)
 
-		if len(whitelist) > 0 {
-			if _, ok := whitelist[issuer.Hostname()]; !ok {
+		if len(allowedServers) > 0 {
+			if _, ok := allowedServers[issuer.Hostname()]; !ok {
 				log.Printf("issuer %s not accepted", issuer.Hostname())
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "charm server cannot publish"})
 				return

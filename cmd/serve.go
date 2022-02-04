@@ -16,7 +16,6 @@ var serveCmd = &cobra.Command{
 		cfg := &server.Config{
 			UploadsPath:         *path,
 			Addr:                *addr,
-			CharmServerURL:      *charmServerURL,
 			AllowedCharmServers: *issuers,
 		}
 		s := server.NewServerWithConfig(cfg)

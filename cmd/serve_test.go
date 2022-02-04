@@ -28,7 +28,6 @@ func TestServe(t *testing.T) {
 	go rootCmd.ExecuteContextC(ctx)
 	testutil.WaitForServer("127.0.0.2:8000")
 
-	assert.Regexp(t, regexp.MustCompile(fmt.Sprintf(`charm server: http://%s:35354`, testutil.CharmServerHost)), buf.String())
 	assert.True(t, strings.Contains(buf.String(), fmt.Sprintf(`uploads directory: %s`, tdir)))
 	assert.Regexp(t, regexp.MustCompile(`serving on: 127.0.0.2:8000`), buf.String())
 }
