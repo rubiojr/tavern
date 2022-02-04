@@ -41,7 +41,7 @@ func JWKS(allowedServers map[string]struct{}) gin.HandlerFunc {
 
 		if len(allowedServers) > 0 {
 			if _, ok := allowedServers[issuer.Hostname()]; !ok {
-				log.Printf("issuer %s not accepted", issuer.Hostname())
+				log.Printf("err: Charm server '%s' not accepted", issuer.Hostname())
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": fmt.Sprintf("charm server %s cannot publish", issuer.Hostname())})
 				return
 			}
