@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/charmbracelet/charm/client"
-	"github.com/charmbracelet/charm/server"
 	"github.com/charmbracelet/keygen"
 	ts "github.com/rubiojr/tavern/server"
 )
@@ -44,30 +43,6 @@ func (b *Buffer) String() string {
 	b.m.Lock()
 	defer b.m.Unlock()
 	return b.b.String()
-}
-
-func StartCharmServer(ctx context.Context, dataDir string) error {
-	cfg := server.DefaultConfig()
-	cfg.DataDir = dataDir
-
-	sp := fmt.Sprintf("%s/.ssh", cfg.DataDir)
-	kp, err := keygen.NewWithWrite(sp, "charm_server", []byte(""), keygen.RSA)
-	if err != nil {
-		return err
-	}
-	cfg.WithKeys(kp.PublicKey, kp.PrivateKeyPEM)
-
-	charm, err := server.NewServer(cfg)
-	if err != nil {
-		return err
-	}
-	go charm.Start(ctx)
-
-	if !WaitForServer(":35354") {
-		return fmt.Errorf("charm server did not start")
-	}
-
-	return nil
 }
 
 func CharmClient() (*client.Client, error) {

@@ -18,11 +18,6 @@ func TestPublish(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	err := testutil.StartCharmServer(ctx, tdir)
-	if err != nil {
-		assert.FailNow(t, "error starting charm server")
-	}
-
 	cc, err := testutil.CharmClient()
 	if err != nil {
 		assert.FailNow(t, "error starting charm client")
