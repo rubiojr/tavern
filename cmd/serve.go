@@ -14,10 +14,10 @@ var serveCmd = &cobra.Command{
 	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg := &server.Config{
-			UploadsPath:    *path,
-			Addr:           *addr,
-			CharmServerURL: *charmServerURL,
-			Whitelist:      *issuers,
+			UploadsPath:         *path,
+			Addr:                *addr,
+			CharmServerURL:      *charmServerURL,
+			AllowedCharmServers: *issuers,
 		}
 		s := server.NewServerWithConfig(cfg)
 		return s.Serve(context.Background())
@@ -34,5 +34,5 @@ func init() {
 	path = serveCmd.Flags().StringP("path", "p", server.ServerDefaultUploadsPath, "Path where the files will be uploaded/served")
 	addr = serveCmd.Flags().StringP("address", "a", server.ServerDefaultAddr, "Listening address")
 	charmServerURL = serveCmd.Flags().StringP("charm-server-url", "", server.ServerDefaultCharmServerURL, "Charm server URL address")
-	issuers = serveCmd.Flags().StringSliceP("whitelist", "w", []string{}, "Accepted Charm servers")
+	issuers = serveCmd.Flags().StringSliceP("allowed-charm-servers", "w", []string{}, "Allowed Charm servers")
 }

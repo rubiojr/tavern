@@ -40,7 +40,6 @@ func JWKS(whitelist map[string]struct{}) gin.HandlerFunc {
 		c.Set("charm_id", claims.Subject)
 
 		if len(whitelist) > 0 {
-			fmt.Println(whitelist)
 			if _, ok := whitelist[issuer.Hostname()]; !ok {
 				log.Printf("issuer %s not accepted", issuer.Hostname())
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "charm server cannot publish"})

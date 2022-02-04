@@ -83,6 +83,23 @@ func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
 	return tav, nil
 }
 
+// Start a Tavern server with an allowed list of Charm servers
+func TavernServerA(ctx context.Context, dataDir string, allowList ...string) (*ts.Server, error) {
+	tav := ts.NewServerWithConfig(&ts.Config{
+		Addr:                "127.0.0.2:8000",
+		UploadsPath:         filepath.Join(dataDir, UploadsPath),
+		CharmServerURL:      "http://127.0.0.2:35354",
+		AllowedCharmServers: allowList,
+	})
+	go tav.Serve(ctx)
+
+	if !WaitForServer("127.0.0.2:8000") {
+		return nil, fmt.Errorf("tavern server did not start")
+	}
+
+	return tav, nil
+}
+
 func WaitForServerShutdown(addr string) bool {
 	for i := 0; i < 40; i++ {
 		_, err := net.Dial("tcp", addr)

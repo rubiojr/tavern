@@ -17,10 +17,10 @@ const ServerDefaultURL = "http://" + ServerDefaultAddr
 const ServerDefaultCharmServerURL = "https://cloud.charm.sh:35354"
 
 type Config struct {
-	Addr           string
-	UploadsPath    string
-	CharmServerURL string
-	Whitelist      []string
+	Addr                string
+	UploadsPath         string
+	CharmServerURL      string
+	AllowedCharmServers []string
 }
 
 type Server struct {
@@ -64,7 +64,7 @@ func (s *Server) Serve(ctx context.Context) error {
 	router := gin.Default()
 	uploads := router.Group(UploadRoute)
 	whitelist := map[string]struct{}{}
-	for _, host := range s.config.Whitelist {
+	for _, host := range s.config.AllowedCharmServers {
 		whitelist[host] = struct{}{}
 	}
 	uploads.Use(middleware.JWKS(whitelist))
