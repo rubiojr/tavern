@@ -16,7 +16,7 @@ import (
 
 const TestHost = "127.0.0.2"
 const TestServerURL = TestHost + ":8000"
-const CharmServerHost = TestHost
+const CharmServerHost = "127.0.0.1"
 const ServerURL = "http://" + TestHost + ":8000"
 const UploadsPath = "/uploads"
 
