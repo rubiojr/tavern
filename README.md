@@ -37,6 +37,10 @@ The Tavern server will:
 * Allow you to publish the files if the JWT is valid and the source Charm server is allowed
 * Write the files to its local files system, under `tavern_uploads/<your-Charm-ID>`.
 
+The sequence diagram looks something like:
+
+![](docs/images/tavern-server-auth.png)
+
 ### Publishing
 
 The Tavern client will publish to https://pub.rbel.co by default, where I host a testing Tavern server. To use your own Tavern server, use `--server-url` with `publish` or export `TAVERN_SERVER_URL`.
