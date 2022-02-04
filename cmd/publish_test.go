@@ -88,5 +88,5 @@ func TestAllowedCharmServers(t *testing.T) {
 		"testdata/test.txt",
 	})
 	_, err = rootCmd.ExecuteC()
-	assert.EqualError(t, err, "publishing failed: {\"error\":\"charm server cannot publish\"}")
+	assert.EqualError(t, err, "publishing failed: {\"error\":\"charm server localhost cannot publish\"}")
 }
