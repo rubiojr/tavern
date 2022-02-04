@@ -14,6 +14,9 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go-version }}
+      - name: Install Docker
+        if: runner.os == 'macOS'
+        uses: docker-practice/actions-setup-docker@master
 
       - name: Checkout code
         uses: actions/checkout@v2
