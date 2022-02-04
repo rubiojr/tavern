@@ -41,6 +41,8 @@ The sequence diagram looks something like:
 
 ![](docs/images/tavern-server-auth.png)
 
+More details available in https://github.com/rubiojr/tavern/pull/6
+
 ### Publishing
 
 The Tavern client will publish to https://pub.rbel.co by default, where I host a testing Tavern server. To use your own Tavern server, use `--server-url` with `publish` or export `TAVERN_SERVER_URL`.
