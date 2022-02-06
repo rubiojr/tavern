@@ -32,7 +32,7 @@ func Uploads(dir string, memLimit int64) gin.HandlerFunc {
 func (m *HTTPUploads) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(m.mem)
 	if r.MultipartForm == nil || r.MultipartForm.File["upload[]"] == nil {
-		http.Error(w, "no files found", http.StatusBadRequest)
+		http.Error(w, "no files found in request", http.StatusBadRequest)
 		return
 	}
 

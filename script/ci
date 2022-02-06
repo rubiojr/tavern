@@ -1,0 +1,8 @@
+#!/bin/bash
+# Integration tests
+set -e
+
+trap "docker-compose down" EXIT
+docker-compose up -d charm
+
+go test ./...

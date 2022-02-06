@@ -4,6 +4,8 @@ A few serve, the rest enjoy the free drinks.
 
 ## ⚠️ Work in progress, experimental
 
+Tavern currently needs a bleeding edge (unreleased) Charm server (due to https://github.com/rubiojr/tavern/pull/6).
+
 As the Tavern client downloads, decrypts and publishes to the world files available in CharmFS, it's highly recommended you setup your own Charm server locally to test Tavern, or use it with a Charm test account where you don't have sensible files that can't be published, until the first release is published. You [can also setup your own Tavern server](#hosting-your-own-tavern-server) so instead of using https://pub.rbel.co.
 
 ## Overview
@@ -20,21 +22,26 @@ The Tavern client uses CharmFS to download the files to publish and the Tavern s
 
 ## Security
 
-Tavern is **highly experimental**, using it with charm accounts where you have valuable data or publishing to a public Tavern server is highly discouraged.
+Tavern is **experimental**, using it with charm accounts where you have valuable data or publishing to a public Tavern server is discouraged until the first official release is published.
 
-When the tavern client publishes files (see [Publishing](#publishing)), it:
+When the Tavern client publishes files (see [Publishing](#publishing)), it:
 
-* Requests a JWT token from Charm (cloud or your own charm server)
+* Requests a JWT token from Charm (cloud or your own charm server) with a `tavern` audience
 * Adds the following HTTP headers to the request that will be sent to the Tavern server:
   * The JWT token received from Charm as the `Authorization` header
-  * Your Charm ID received from Charm as the CharmID header
 * Sends a POST to the Tavern server with the headers and a multipart form with the files downloaded from CharmFS
 
-The tavern server will:
+The Tavern server will:
 
-* Use the same JWT header to check if you have an account in the configured Charm server (cloud.charm.sh by default), sending an HTTP request to the Charm HTTP server.
-* If the request returns a 200, will allow you to upload the files
+* [Validate the JWT](https://auth0.com/blog/navigating-rs256-and-jwks) token and optionally the issuer (Charm server), if `--allowed-charm-servers` is specified
+* Allow you to publish the files if the JWT is valid and the source Charm server is allowed
 * Write the files to its local files system, under `tavern_uploads/<your-Charm-ID>`.
+
+The sequence diagram looks something like:
+
+![](docs/images/tavern-server-auth.png)
+
+More details available in https://github.com/rubiojr/tavern/pull/6
 
 ### Publishing
 
@@ -95,6 +102,8 @@ tavern serve
 2021/12/21 14:14:09 uploads directory: tavern_uploads
 ```
 
+Note that this allows anyone with a Charm account **in any Charm server** to publish files to this Tavern server.
+
 Or using docker:
 
 ```
@@ -109,11 +118,10 @@ tavern publish --server-url https://my-tavern-server.com /site
 
 #### Running Tavern against your own Charm server
 
-If you want Tavern's server to auth against your own charm server, running locally:
+If you want Tavern's server to auth against your own Charm server (and only that one):
 
 ```
-# 35354 is the default Charm server HTTP port
-tavern serve --charm-server-url http https://your.charm.server:35354
+tavern serve --allowed-charm-servers your.charm.server
 ```
 
 You'll also need to use `--charm-server-host` when publishing with Tavern client:

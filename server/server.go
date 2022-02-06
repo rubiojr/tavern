@@ -17,9 +17,9 @@ const ServerDefaultURL = "http://" + ServerDefaultAddr
 const ServerDefaultCharmServerURL = "https://cloud.charm.sh:35354"
 
 type Config struct {
-	Addr           string
-	UploadsPath    string
-	CharmServerURL string
+	Addr                string
+	UploadsPath         string
+	AllowedCharmServers []string
 }
 
 type Server struct {
@@ -28,9 +28,8 @@ type Server struct {
 
 func NewServer() *Server {
 	config := &Config{
-		Addr:           ServerDefaultAddr,
-		UploadsPath:    ServerDefaultUploadsPath,
-		CharmServerURL: ServerDefaultCharmServerURL,
+		Addr:        ServerDefaultAddr,
+		UploadsPath: ServerDefaultUploadsPath,
 	}
 
 	return NewServerWithConfig(config)
@@ -45,11 +44,6 @@ func NewServerWithConfig(config *Config) *Server {
 		config.Addr = ServerDefaultAddr
 	}
 
-	envCharmURL := os.Getenv("CHARM_SERVER_URL")
-	if config.CharmServerURL == ServerDefaultCharmServerURL && envCharmURL != "" {
-		config.CharmServerURL = envCharmURL
-	}
-
 	return &Server{config: config}
 }
 
@@ -62,12 +56,15 @@ func (s *Server) Serve(ctx context.Context) error {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	uploads := router.Group(UploadRoute)
-	uploads.Use(middleware.CharmAuth(s.config.CharmServerURL))
+	allowedServers := map[string]struct{}{}
+	for _, host := range s.config.AllowedCharmServers {
+		allowedServers[host] = struct{}{}
+	}
+	uploads.Use(middleware.JWKS(allowedServers))
 	uploads.POST("/", middleware.Uploads(s.config.UploadsPath, 32<<20))
 	router.StaticFS("/", http.Dir(s.config.UploadsPath))
 	log.Printf("serving on: %s", s.config.Addr)
 	log.Printf("uploads directory: %s", s.config.UploadsPath)
-	log.Printf("charm server: %s", s.config.CharmServerURL)
 
 	srv := &http.Server{
 		Addr:    s.config.Addr,

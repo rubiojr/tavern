@@ -1,6 +1,6 @@
 version: "3"
 services:
-	tavern:
+  tavern:
     image: ghcr.io/rubiojr/tavern:latest
     container_name: tavern 
     volumes:
@@ -8,3 +8,12 @@ services:
     restart: unless-stopped
     ports:
       - 8000:8000
+  charm:
+    image: ghcr.io/charmbracelet/charm:devel
+    container_name: charm
+    volumes:
+      - ./_fixtures/server:/data
+    ports:
+      - 35353:35353 # ssh
+      - 35354:35354 # http
+      - 35355:35356 # health

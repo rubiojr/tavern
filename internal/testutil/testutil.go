@@ -5,20 +5,20 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"os"
 	"path/filepath"
 	"sync"
 	"time"
 
 	"github.com/charmbracelet/charm/client"
-	"github.com/charmbracelet/charm/server"
 	"github.com/charmbracelet/keygen"
 	ts "github.com/rubiojr/tavern/server"
 )
 
 const TestHost = "127.0.0.2"
-const TestServerURL = TestHost + ":8000"
-const CharmServerHost = TestHost
-const ServerURL = "http://" + TestHost + ":8000"
+const TestServerAddr = TestHost + ":8000"
+const CharmServerHost = "127.0.0.1"
+const TestServerURL = "http://" + TestHost + ":8000"
 const UploadsPath = "/uploads"
 
 // Thread safe buffer to avoid data races when setting a custom writer
@@ -46,32 +46,8 @@ func (b *Buffer) String() string {
 	return b.b.String()
 }
 
-func StartCharmServer(ctx context.Context, dataDir string) error {
-	cfg := server.DefaultConfig()
-	cfg.DataDir = dataDir
-
-	sp := fmt.Sprintf("%s/.ssh", cfg.DataDir)
-	kp, err := keygen.NewWithWrite(sp, "charm_server", []byte(""), keygen.RSA)
-	if err != nil {
-		return err
-	}
-	cfg.WithKeys(kp.PublicKey, kp.PrivateKeyPEM)
-
-	charm, err := server.NewServer(cfg)
-	if err != nil {
-		return err
-	}
-	go charm.Start(ctx)
-
-	if !WaitForServer(":35354") {
-		return fmt.Errorf("charm server did not start")
-	}
-
-	return nil
-}
-
 func CharmClient() (*client.Client, error) {
-	err := genClientKeys("127.0.0.2")
+	err := genClientKeys(TestHost)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +56,7 @@ func CharmClient() (*client.Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	cconfig.Host = "127.0.0.2"
+	cconfig.Host = TestHost
 
 	cc, err := client.NewClient(cconfig)
 	if err != nil {
@@ -95,13 +71,28 @@ func CharmClient() (*client.Client, error) {
 
 func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
 	tav := ts.NewServerWithConfig(&ts.Config{
-		Addr:           "127.0.0.2:8000",
-		UploadsPath:    filepath.Join(dataDir, UploadsPath),
-		CharmServerURL: "http://127.0.0.2:35354",
+		Addr:        TestServerAddr,
+		UploadsPath: filepath.Join(dataDir, UploadsPath),
 	})
 	go tav.Serve(ctx)
 
-	if !WaitForServer("127.0.0.2:8000") {
+	if !WaitForServer(TestServerAddr) {
+		return nil, fmt.Errorf("tavern server did not start")
+	}
+
+	return tav, nil
+}
+
+// Start a Tavern server with an allowed list of Charm servers
+func TavernServerA(ctx context.Context, dataDir string, allowList ...string) (*ts.Server, error) {
+	tav := ts.NewServerWithConfig(&ts.Config{
+		Addr:                TestServerAddr,
+		UploadsPath:         filepath.Join(dataDir, UploadsPath),
+		AllowedCharmServers: allowList,
+	})
+	go tav.Serve(ctx)
+
+	if !WaitForServer(TestServerAddr) {
 		return nil, fmt.Errorf("tavern server did not start")
 	}
 
@@ -145,4 +136,13 @@ func genClientKeys(dir string) error {
 	}
 
 	return nil
+}
+
+func init() {
+	// Ugly hack until we can set path for keys via Env in Charm
+	// https://github.com/charmbracelet/charm/issues/50
+	os.Setenv("HOME", filepath.Join("../_fixtures/home"))
+	// for Windows tests
+	os.Setenv("LOCALAPPDATA", filepath.Join("../_fixtures/home/.local/share"))
+	fmt.Println("foooo")
 }
