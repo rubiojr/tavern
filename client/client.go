@@ -11,6 +11,7 @@ import (
 
 	"github.com/charmbracelet/charm/client"
 	cfs "github.com/charmbracelet/charm/fs"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/rubiojr/tavern/server"
 )
 
@@ -46,9 +47,17 @@ func NewClientWithConfig(cfg *Config) (*Client, error) {
 		return nil, err
 	}
 
-	ccfg.Host = cfg.CharmServerHost
-	ccfg.HTTPPort = cfg.CharmServerHTTPPort
-	ccfg.SSHPort = cfg.CharmServerSSHPort
+	if cfg.CharmServerHost != "" {
+		ccfg.Host = cfg.CharmServerHost
+	}
+
+	if cfg.CharmServerHTTPPort != 0 {
+		ccfg.HTTPPort = cfg.CharmServerHTTPPort
+	}
+
+	if cfg.CharmServerSSHPort != 0 {
+		ccfg.SSHPort = cfg.CharmServerSSHPort
+	}
 
 	c, err := client.NewClient(ccfg)
 	if err != nil {
@@ -94,12 +103,11 @@ func (c *Client) PublishWithRoot(root, path string) error {
 		return err
 	}
 
-	id, err := c.charmClient.ID()
+	jwt, err := c.charmClient.JWT("tavern")
 	if err != nil {
 		return err
 	}
-
-	req, err := c.authedRequest(server.UploadRoute, id, body)
+	req, err := c.UploadRequest(jwt, body)
 	if err != nil {
 		return err
 	}
@@ -119,23 +127,23 @@ func (c *Client) PublishWithRoot(root, path string) error {
 		return fmt.Errorf("publishing failed: %s", errStatus)
 	}
 
+	var id string
+	if id, err = charmId(jwt); err != nil {
+		return err
+	}
 	fmt.Println("Site published!")
 	fmt.Printf("Visit %s/%s\n", c.config.ServerURL, id)
+
 	return nil
 }
 
-func (c *Client) authedRequest(path, id string, body *bytes.Buffer) (*http.Request, error) {
+func (c *Client) UploadRequest(token string, body *bytes.Buffer) (*http.Request, error) {
 	req, err := http.NewRequest("POST", fmt.Sprintf(c.config.ServerURL+server.UploadRoute), body)
 	if err != nil {
 		return nil, err
 	}
 
-	jwt, err := c.charmClient.JWT("tavern")
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Add("Authorization", fmt.Sprintf("bearer %s", jwt))
-	req.Header.Add("CharmId", id)
+	req.Header.Add("Authorization", fmt.Sprintf("bearer %s", token))
 
 	return req, nil
 }
@@ -207,4 +215,15 @@ func uploadFile(remotefs fs.FS, path string) (*bytes.Buffer, *multipart.Writer, 
 	_, err = part.Write(out)
 
 	return body, writer, err
+}
+
+func charmId(token string) (string, error) {
+	p := jwt.Parser{}
+	t, _, err := p.ParseUnverified(token, &jwt.RegisteredClaims{})
+	if err != nil {
+		return "", err
+	}
+
+	claims := t.Claims.(*jwt.RegisteredClaims)
+	return claims.Subject, nil
 }
