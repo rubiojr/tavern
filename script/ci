@@ -2,9 +2,7 @@
 # Integration tests
 set -e
 
-trap "docker-compose logs; docker-compose down" EXIT
+trap "docker-compose down" EXIT
 docker-compose up -d charm
-
-sleep 20
 
 go test ./...

@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"os"
 	"path/filepath"
 	"sync"
 	"time"
@@ -135,4 +136,13 @@ func genClientKeys(dir string) error {
 	}
 
 	return nil
+}
+
+func init() {
+	// Ugly hack until we can set path for keys via Env in Charm
+	// https://github.com/charmbracelet/charm/issues/50
+	os.Setenv("HOME", filepath.Join("../_fixtures/home"))
+	// for Windows tests
+	os.Setenv("LOCALAPPDATA", filepath.Join("../_fixtures/home/.local/share"))
+	fmt.Println("foooo")
 }

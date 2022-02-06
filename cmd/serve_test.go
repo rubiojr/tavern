@@ -11,8 +11,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
@@ -83,11 +81,6 @@ func TestInvalidJWT(t *testing.T) {
 	sum := sha256.Sum256(*pk)
 	kid := fmt.Sprintf("%x", sum)
 	token.Header["kid"] = kid
-	// Ugly hack until we can set path for keys via Env in Charm
-	// https://github.com/charmbracelet/charm/issues/50
-	os.Setenv("HOME", filepath.Join("../_fixtures/home"))
-	// for Windows tests
-	os.Setenv("LOCALAPPDATA", filepath.Join("../_fixtures/home/.local/share"))
 	tokenString, err := token.SignedString(pk)
 	if err != nil {
 		assert.FailNow(t, err.Error())
@@ -147,11 +140,6 @@ func TestValidJWT(t *testing.T) {
 	sum := sha256.Sum256([]byte(*jwkp.PrivateKey))
 	kid := fmt.Sprintf("%x", sum)
 	token.Header["kid"] = kid
-	// Ugly hack until we can set path for keys via Env in Charm
-	// https://github.com/charmbracelet/charm/issues/50
-	os.Setenv("HOME", filepath.Join("../_fixtures/home"))
-	// for Windows tests
-	os.Setenv("LOCALAPPDATA", filepath.Join("../_fixtures/home/.local/share"))
 	tokenString, err := token.SignedString(pk)
 	if err != nil {
 		assert.FailNow(t, err.Error())
