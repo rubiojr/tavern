@@ -50,7 +50,6 @@ func TestServe(t *testing.T) {
 }
 
 func TestInvalidJWT(t *testing.T) {
-	serverAddress := "127.0.0.2:8000"
 	buf := &testutil.Buffer{}
 	log.SetOutput(buf)
 	tdir := t.TempDir()
@@ -60,11 +59,11 @@ func TestInvalidJWT(t *testing.T) {
 	rootCmd.SetArgs([]string{
 		"serve",
 		"--path", tdir,
-		"--address", serverAddress,
+		"--address", testutil.TestServerAddr,
 	})
 	go rootCmd.ExecuteContextC(ctx)
 
-	if !testutil.WaitForServer(serverAddress) {
+	if !testutil.WaitForServer(testutil.TestServerAddr) {
 		assert.FailNow(t, "error starting tavern server")
 	}
 
@@ -103,7 +102,6 @@ func TestInvalidJWT(t *testing.T) {
 }
 
 func TestValidJWT(t *testing.T) {
-	serverAddress := "127.0.0.2:8000"
 	buf := &testutil.Buffer{}
 	log.SetOutput(buf)
 	tdir := t.TempDir()
@@ -113,11 +111,11 @@ func TestValidJWT(t *testing.T) {
 	rootCmd.SetArgs([]string{
 		"serve",
 		"--path", tdir,
-		"--address", serverAddress,
+		"--address", testutil.TestServerAddr,
 	})
 	go rootCmd.ExecuteContextC(ctx)
 
-	if !testutil.WaitForServer(serverAddress) {
+	if !testutil.WaitForServer(testutil.TestServerAddr) {
 		assert.FailNow(t, "error starting tavern server")
 	}
 
@@ -182,7 +180,7 @@ func generateEd25519Keys() (*ed25519.PrivateKey, error) {
 
 func tClient() (*client.Client, error) {
 	cfg := client.DefaultConfig()
-	cfg.ServerURL = testutil.ServerURL
+	cfg.ServerURL = testutil.TestServerURL
 	cfg.CharmServerHost = testutil.CharmServerHost
 	return client.NewClientWithConfig(cfg)
 }

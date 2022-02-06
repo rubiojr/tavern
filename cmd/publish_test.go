@@ -14,7 +14,6 @@ import (
 )
 
 func TestPublish(t *testing.T) {
-	serverAddress := "127.0.0.3:8000"
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -29,7 +28,7 @@ func TestPublish(t *testing.T) {
 		assert.FailNow(t, "error retrieving charm ID", err)
 	}
 
-	_, err = testutil.TavernServer(ctx, serverAddress, tdir)
+	_, err = testutil.TavernServer(ctx, tdir)
 	assert.NoError(t, err)
 
 	charmfs, err := cfs.NewFSWithClient(cc)
@@ -46,7 +45,7 @@ func TestPublish(t *testing.T) {
 	rootCmd.SetArgs([]string{
 		"publish",
 		"--charm-server-host", testutil.TestHost,
-		"--server-url", "http://" + serverAddress,
+		"--server-url", testutil.TestServerURL,
 		"testdata/test.txt",
 	})
 	_, err = rootCmd.ExecuteC()
@@ -61,7 +60,6 @@ func TestPublish(t *testing.T) {
 }
 
 func TestAllowedCharmServers(t *testing.T) {
-	serverAddress := "127.0.0.3:8000"
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -71,7 +69,7 @@ func TestAllowedCharmServers(t *testing.T) {
 		assert.FailNow(t, "error starting charm client")
 	}
 
-	_, err = testutil.TavernServerA(ctx, serverAddress, tdir, "foo.bar")
+	_, err = testutil.TavernServerA(ctx, tdir, "foo.bar")
 	assert.NoError(t, err)
 
 	charmfs, err := cfs.NewFSWithClient(cc)
@@ -88,7 +86,7 @@ func TestAllowedCharmServers(t *testing.T) {
 	rootCmd.SetArgs([]string{
 		"publish",
 		"--charm-server-host", testutil.TestHost,
-		"--server-url", "http://" + serverAddress,
+		"--server-url", testutil.TestServerURL,
 		"testdata/test.txt",
 	})
 	_, err = rootCmd.ExecuteC()

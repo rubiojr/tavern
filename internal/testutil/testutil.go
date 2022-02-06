@@ -16,9 +16,9 @@ import (
 )
 
 const TestHost = "127.0.0.2"
-const TestServerURL = TestHost + ":8000"
+const TestServerAddr = TestHost + ":8000"
 const CharmServerHost = "127.0.0.1"
-const ServerURL = "http://" + TestHost + ":8000"
+const TestServerURL = "http://" + TestHost + ":8000"
 const UploadsPath = "/uploads"
 
 // Thread safe buffer to avoid data races when setting a custom writer
@@ -47,7 +47,7 @@ func (b *Buffer) String() string {
 }
 
 func CharmClient() (*client.Client, error) {
-	err := genClientKeys("127.0.0.2")
+	err := genClientKeys(TestHost)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func CharmClient() (*client.Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	cconfig.Host = "127.0.0.2"
+	cconfig.Host = TestHost
 
 	cc, err := client.NewClient(cconfig)
 	if err != nil {
@@ -69,14 +69,14 @@ func CharmClient() (*client.Client, error) {
 	return cc, nil
 }
 
-func TavernServer(ctx context.Context, addr, dataDir string) (*ts.Server, error) {
+func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
 	tav := ts.NewServerWithConfig(&ts.Config{
-		Addr:        addr,
+		Addr:        TestServerAddr,
 		UploadsPath: filepath.Join(dataDir, UploadsPath),
 	})
 	go tav.Serve(ctx)
 
-	if !WaitForServer(addr) {
+	if !WaitForServer(TestServerAddr) {
 		return nil, fmt.Errorf("tavern server did not start")
 	}
 
@@ -84,15 +84,15 @@ func TavernServer(ctx context.Context, addr, dataDir string) (*ts.Server, error)
 }
 
 // Start a Tavern server with an allowed list of Charm servers
-func TavernServerA(ctx context.Context, addr string, dataDir string, allowList ...string) (*ts.Server, error) {
+func TavernServerA(ctx context.Context, dataDir string, allowList ...string) (*ts.Server, error) {
 	tav := ts.NewServerWithConfig(&ts.Config{
-		Addr:                addr,
+		Addr:                TestServerAddr,
 		UploadsPath:         filepath.Join(dataDir, UploadsPath),
 		AllowedCharmServers: allowList,
 	})
 	go tav.Serve(ctx)
 
-	if !WaitForServer(addr) {
+	if !WaitForServer(TestServerAddr) {
 		return nil, fmt.Errorf("tavern server did not start")
 	}
 
