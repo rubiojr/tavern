@@ -3,8 +3,8 @@ module github.com/rubiojr/tavern
 go 1.17
 
 // go list -m github.com/rubiojr/charm@main
-//replace github.com/charmbracelet/charm => /home/rubiojr/git/rubiojr/charm
-//replace github.com/charmbracelet/charm v0.9.2 => github.com/rubiojr/charm v0.9.2-0.20220131215334-460d77e2968a
+// replace github.com/charmbracelet/charm => /home/rubiojr/git/rubiojr/charm
+replace github.com/charmbracelet/charm v0.9.3-0.20220203210753-db3588d01a7a => github.com/rubiojr/charm v0.9.2-0.20220201100523-720970afc498
 
 require (
 	github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1.0.20220114094443-f1c09c3cd875

@@ -83,8 +83,6 @@ github.com/charmbracelet/bubbles v0.8.0/go.mod h1:5WX1sSSjNCgCrzvRMN/z23HxvWaa+A
 github.com/charmbracelet/bubbletea v0.13.1/go.mod h1:tp9tr9Dadh0PLhgiwchE5zZJXm5543JYjHG9oY+5qSg=
 github.com/charmbracelet/bubbletea v0.19.1 h1:VHuzkJbnTAkxhOfi9+Lb5PYfNM9+Oh+qhP8uDX5ReOU=
 github.com/charmbracelet/bubbletea v0.19.1/go.mod h1:VuXF2pToRxDUHcBUcPmCRUHRvFATM4Ckb/ql1rBl3KA=
-github.com/charmbracelet/charm v0.9.3-0.20220203210753-db3588d01a7a h1:UPrCAOQ9JOH3pmN8YjTzZIGgbH4/4rNJSkmodrTjf7E=
-github.com/charmbracelet/charm v0.9.3-0.20220203210753-db3588d01a7a/go.mod h1:lUtYWD7jRGCUHwMSM1KkzjhVdsNigRZLoUQ5GJx4dmw=
 github.com/charmbracelet/keygen v0.1.2 h1:Gr/gdIOjDIxCTRVXpwa9tsXPoJPS2eGNehPoMnZLvTQ=
 github.com/charmbracelet/keygen v0.1.2/go.mod h1:kFQ3Cvop12fXWX1K29vxDxV9x8ujG4wBSXq//GySSSk=
 github.com/charmbracelet/lipgloss v0.1.1/go.mod h1:5D8zradw52m7QmxRF6QgwbwJi9je84g8MkWiGN07uKg=
@@ -399,6 +397,8 @@ github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
+github.com/rubiojr/charm v0.9.2-0.20220201100523-720970afc498 h1:9Tj8aI1ndEwd4ZxIZ9NdpaLnO7FEUUkDFgSBDS5HZww=
+github.com/rubiojr/charm v0.9.2-0.20220201100523-720970afc498/go.mod h1:PCAlcbNN1hjeo0gfWaed/XD1Su+hcD6f+UfcGzwzO9c=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb6uqfes/u+d4ooFouqFdy9/2g9QGwK3SQygK0Ts=
 github.com/sagikazarmark/crypt v0.3.0/go.mod h1:uD/D+6UF4SrIR1uGEv7bBNkNqLGqUr43MRiaGWX1Nig=
