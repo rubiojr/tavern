@@ -14,6 +14,7 @@ import (
 )
 
 func TestPublish(t *testing.T) {
+	t.Skip()
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -60,6 +61,7 @@ func TestPublish(t *testing.T) {
 }
 
 func TestAllowedCharmServers(t *testing.T) {
+	t.Skip()
 	tdir := t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
