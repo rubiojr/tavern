@@ -145,5 +145,4 @@ func init() {
 	// for Windows tests
 	os.Setenv("LOCALAPPDATA", filepath.Join("../_fixtures/home/.local/share"))
 	os.Setenv("CHARM_HTTP_SCHEME", "http")
-	fmt.Println("foooo")
 }
