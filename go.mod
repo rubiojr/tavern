@@ -4,12 +4,12 @@ go 1.17
 
 // go list -m github.com/rubiojr/charm@main
 // replace github.com/charmbracelet/charm => /home/rubiojr/git/rubiojr/charm
-replace github.com/charmbracelet/charm v0.9.3-0.20220203210753-db3588d01a7a => github.com/rubiojr/charm v0.9.2-0.20220201100523-720970afc498
+// replace github.com/charmbracelet/charm v0.9.3-0.20220203210753-db3588d01a7a => github.com/rubiojr/charm v0.9.2-0.20220201100523-720970afc498
 
 require (
 	github.com/auth0/go-jwt-middleware/v2 v2.0.0-beta.1.0.20220114094443-f1c09c3cd875
-	github.com/charmbracelet/charm v0.9.3-0.20220203210753-db3588d01a7a
-	github.com/charmbracelet/keygen v0.1.2
+	github.com/charmbracelet/charm v0.10.2
+	github.com/charmbracelet/keygen v0.2.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/spf13/cobra v1.3.0
@@ -21,11 +21,11 @@ require (
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
 	github.com/caarlos0/env/v6 v6.9.1 // indirect
 	github.com/calmh/randomart v1.1.0 // indirect
-	github.com/charmbracelet/bubbles v0.8.0 // indirect
-	github.com/charmbracelet/bubbletea v0.19.1 // indirect
+	github.com/charmbracelet/bubbles v0.10.3 // indirect
+	github.com/charmbracelet/bubbletea v0.20.0 // indirect
 	github.com/charmbracelet/lipgloss v0.4.0 // indirect
-	github.com/charmbracelet/wish v0.2.1-0.20220201011151-beb5f0cf971c // indirect
-	github.com/containerd/console v1.0.2 // indirect
+	github.com/charmbracelet/wish v0.2.1 // indirect
+	github.com/containerd/console v1.0.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -53,7 +53,7 @@ require (
 	github.com/muesli/go-app-paths v0.2.1 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/sasquatch v0.0.0-20200811221207-66979d92330a // indirect
-	github.com/muesli/termenv v0.9.0 // indirect
+	github.com/muesli/termenv v0.11.1-0.20220212125758-44cd13922739 // indirect
 	github.com/muesli/toktok v0.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
