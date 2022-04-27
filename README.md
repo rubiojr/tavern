@@ -4,8 +4,6 @@ A few serve, the rest enjoy the free drinks.
 
 ## ⚠️ Work in progress, experimental
 
-Tavern currently needs a bleeding edge (unreleased) Charm server (due to https://github.com/rubiojr/tavern/pull/6).
-
 As the Tavern client downloads, decrypts and publishes to the world files available in CharmFS, it's highly recommended you setup your own Charm server locally to test Tavern, or use it with a Charm test account where you don't have sensible files that can't be published, until the first release is published. You [can also setup your own Tavern server](#hosting-your-own-tavern-server) so instead of using https://pub.rbel.co.
 
 ## Overview
