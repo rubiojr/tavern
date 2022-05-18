@@ -71,7 +71,12 @@ func TavernServer(ctx context.Context, dataDir string) (*ts.Server, error) {
 		Addr:        TestServerAddr,
 		UploadsPath: filepath.Join(dataDir, UploadsPath),
 	})
-	go tav.Serve(ctx)
+	go func() {
+		err := tav.Serve(ctx)
+		if err != nil && err != context.Canceled {
+			panic(err)
+		}
+	}()
 
 	if !WaitForServer(TestServerAddr) {
 		return nil, fmt.Errorf("tavern server did not start")
