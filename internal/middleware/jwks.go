@@ -68,7 +68,7 @@ func JWKS(allowedServers map[string]struct{}) gin.HandlerFunc {
 		if valid {
 			c.Next()
 		} else {
-			log.Printf("JWT validation failed")
+			log.Printf("JWT validation failed. Issuer: %s", issuer.Hostname())
 			c.Abort()
 		}
 	}

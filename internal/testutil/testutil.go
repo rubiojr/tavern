@@ -11,15 +11,17 @@ import (
 	"time"
 
 	"github.com/charmbracelet/charm/client"
-	"github.com/charmbracelet/keygen"
 	ts "github.com/rubiojr/tavern/server"
 )
 
-const TestHost = "127.0.0.2"
+// Tavern testing server
+const TestHost = "127.0.0.1"
 const TestServerAddr = TestHost + ":8000"
-const CharmServerHost = "127.0.0.1"
 const TestServerURL = "http://" + TestHost + ":8000"
 const UploadsPath = "/uploads"
+
+// Charm server for testing (docker)
+const CharmServerHost = "127.0.0.1"
 
 // Thread safe buffer to avoid data races when setting a custom writer
 // for the log
@@ -47,16 +49,11 @@ func (b *Buffer) String() string {
 }
 
 func CharmClient() (*client.Client, error) {
-	err := genClientKeys(TestHost)
-	if err != nil {
-		return nil, err
-	}
-
 	cconfig, err := client.ConfigFromEnv()
 	if err != nil {
 		return nil, err
 	}
-	cconfig.Host = TestHost
+	cconfig.Host = CharmServerHost
 
 	cc, err := client.NewClient(cconfig)
 	if err != nil {
@@ -124,24 +121,11 @@ func WaitForServer(addr string) bool {
 	return false
 }
 
-func genClientKeys(dir string) error {
-	// Generate keys
-	dp, err := client.DataPath(dir)
-	if err != nil {
-		return err
-	}
-	_, err = keygen.NewWithWrite(dp, "charm", []byte(""), keygen.RSA)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func init() {
-	// Ugly hack until we can set path for keys via Env in Charm
-	// https://github.com/charmbracelet/charm/issues/50
-	os.Setenv("HOME", filepath.Join("../_fixtures/home"))
+	os.Setenv("CHARM_HTTP_PORT", "35354")
+	os.Setenv("CHARM_HOST", CharmServerHost)
+	os.Setenv("CHARM_SERVER_PUBLIC_URL", "")
+	os.Setenv("CHARM_DATA_DIR", filepath.Join("../_fixtures/home/.local/share/charm"))
 	// for Windows tests
 	os.Setenv("LOCALAPPDATA", filepath.Join("../_fixtures/home/.local/share"))
 	os.Setenv("CHARM_HTTP_SCHEME", "http")

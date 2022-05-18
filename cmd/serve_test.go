@@ -27,7 +27,6 @@ import (
 const charmID = "b4ede63d-c736-4561-80e9-0f912337b251"
 
 func TestServe(t *testing.T) {
-	serverAddress := "127.0.0.2:8000"
 	buf := &testutil.Buffer{}
 	log.SetOutput(buf)
 	tdir := t.TempDir()
@@ -37,16 +36,16 @@ func TestServe(t *testing.T) {
 	rootCmd.SetArgs([]string{
 		"serve",
 		"--path", tdir,
-		"--address", serverAddress,
+		"--address", testutil.TestServerAddr,
 	})
 	go rootCmd.ExecuteContextC(ctx)
 
-	if !testutil.WaitForServer(serverAddress) {
+	if !testutil.WaitForServer(testutil.TestServerAddr) {
 		assert.FailNow(t, "error starting tavern server")
 	}
 
 	assert.True(t, strings.Contains(buf.String(), fmt.Sprintf(`uploads directory: %s`, tdir)))
-	assert.Regexp(t, regexp.MustCompile(`serving on: `+serverAddress), buf.String())
+	assert.Regexp(t, regexp.MustCompile(`serving on: `+testutil.TestServerAddr), buf.String())
 }
 
 func TestInvalidJWT(t *testing.T) {
