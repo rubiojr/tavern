@@ -2,6 +2,8 @@
 # Integration tests
 set -e
 
+mkdir -p _tmp/charm-server
+cp -r _fixtures/server/.ssh _tmp/charm-server/ 
 trap "docker-compose down" EXIT
 docker-compose up -d charm
 

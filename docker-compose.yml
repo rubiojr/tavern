@@ -12,7 +12,7 @@ services:
     image: ghcr.io/charmbracelet/charm:devel
     container_name: charm
     volumes:
-      - ./_fixtures/server:/data
+      - ./_tmp/charm-server:/data
     ports:
       - 35353:35353 # ssh
       - 35354:35354 # http
