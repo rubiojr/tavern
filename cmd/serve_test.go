@@ -27,7 +27,7 @@ import (
 const charmID = "b4ede63d-c736-4561-80e9-0f912337b251"
 
 func TestServe(t *testing.T) {
-	serverAddress := "127.0.0.2:8000"
+	serverAddress := testutil.TestServerAddr
 	buf := &testutil.Buffer{}
 	log.SetOutput(buf)
 	tdir := t.TempDir()

@@ -15,7 +15,7 @@ import (
 )
 
 // Tavern testing server
-const TestHost = "127.0.0.2"
+const TestHost = "127.0.0.1"
 const TestServerAddr = TestHost + ":8000"
 const TestServerURL = "http://" + TestHost + ":8000"
 const UploadsPath = "/uploads"
