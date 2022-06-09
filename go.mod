@@ -12,7 +12,7 @@ require (
 	github.com/gin-gonic/gin v1.8.0
 	github.com/golang-jwt/jwt/v4 v4.4.1
 	github.com/spf13/cobra v1.4.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.2
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70
 )
 
@@ -81,7 +81,7 @@ require (
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/uint128 v1.1.1 // indirect
 	modernc.org/cc/v3 v3.35.22 // indirect
 	modernc.org/ccgo/v3 v3.15.14 // indirect
