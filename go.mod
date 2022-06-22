@@ -11,7 +11,7 @@ require (
 	github.com/charmbracelet/charm v0.12.1
 	github.com/gin-gonic/gin v1.8.0
 	github.com/golang-jwt/jwt/v4 v4.4.1
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.7.2
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70
 )
