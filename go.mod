@@ -9,7 +9,7 @@ go 1.17
 require (
 	github.com/auth0/go-jwt-middleware/v2 v2.0.1
 	github.com/charmbracelet/charm v0.12.3
-	github.com/gin-gonic/gin v1.8.0
+	github.com/gin-gonic/gin v1.8.1
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.0
