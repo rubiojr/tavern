@@ -10,7 +10,7 @@ require (
 	github.com/auth0/go-jwt-middleware/v2 v2.1.0
 	github.com/charmbracelet/charm v0.12.4
 	github.com/gin-gonic/gin v1.8.2
-	github.com/golang-jwt/jwt/v4 v4.4.2
+	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.1
 	golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898
