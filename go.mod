@@ -7,13 +7,13 @@ go 1.17
 // replace github.com/charmbracelet/charm v0.9.3-0.20220203210753-db3588d01a7a => github.com/rubiojr/charm v0.9.2-0.20220201100523-720970afc498
 
 require (
-	github.com/auth0/go-jwt-middleware/v2 v2.0.1
+	github.com/auth0/go-jwt-middleware/v2 v2.1.0
 	github.com/charmbracelet/charm v0.12.4
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.1
-	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd
+	golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898
 )
 
 require (
