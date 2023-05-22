@@ -8,7 +8,7 @@ go 1.17
 
 require (
 	github.com/auth0/go-jwt-middleware/v2 v2.1.0
-	github.com/charmbracelet/charm v0.12.4
+	github.com/charmbracelet/charm v0.12.5
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/spf13/cobra v1.5.0
@@ -18,21 +18,24 @@ require (
 
 require (
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
+	github.com/aymanbagabas/go-osc52 v1.2.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/caarlos0/env/v6 v6.9.3 // indirect
+	github.com/caarlos0/env/v6 v6.10.0 // indirect
 	github.com/caarlos0/sshmarshal v0.1.0 // indirect
 	github.com/calmh/randomart v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/charmbracelet/bubbles v0.13.0 // indirect
-	github.com/charmbracelet/bubbletea v0.22.0 // indirect
+	github.com/charmbracelet/bubbletea v0.23.2 // indirect
 	github.com/charmbracelet/keygen v0.3.0 // indirect
-	github.com/charmbracelet/lipgloss v0.5.0 // indirect
+	github.com/charmbracelet/lipgloss v0.6.0 // indirect
+	github.com/charmbracelet/log v0.1.0 // indirect
 	github.com/charmbracelet/wish v0.5.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gliderlabs/ssh v0.3.4 // indirect
+	github.com/gliderlabs/ssh v0.3.5 // indirect
+	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.11.1 // indirect
@@ -45,19 +48,20 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
-	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/mattn/go-runewidth v0.0.13 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
+	github.com/mattn/go-localereader v0.0.1 // indirect
+	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/meowgorithm/babylogger v1.2.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/muesli/ansi v0.0.0-20211018074035-2e021307bc4b // indirect
-	github.com/muesli/cancelreader v0.2.1 // indirect
+	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/go-app-paths v0.2.2 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/sasquatch v0.0.0-20200811221207-66979d92330a // indirect
-	github.com/muesli/termenv v0.11.1-0.20220212125758-44cd13922739 // indirect
+	github.com/muesli/termenv v0.14.0 // indirect
 	github.com/muesli/toktok v0.1.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
